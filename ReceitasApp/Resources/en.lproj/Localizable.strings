@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  Recipes
+
+  Created by Luan Damato on 16/10/25.
+  
+*/
+"welcome" = "Welcome";
+"signin" = "Sign In";
+"signup" = "Sign Up";
+"welcomeDescription" = "welcomeDescription";
+"home" = "Home";

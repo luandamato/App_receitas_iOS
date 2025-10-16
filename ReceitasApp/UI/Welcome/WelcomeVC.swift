@@ -9,21 +9,32 @@ import UIKit
 
 class WelcomeVC: UIViewController {
 
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("welcome", comment: "")
+        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.textColor = AppColor.title
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
         view.backgroundColor = AppColor.background
-        // Do any additional setup after loading the view.
     }
-    
 
-    /*
-    // MARK: - Navigation
+    // MARK: - Setup
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupViews() {
+        view.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            // Título centralizado na tela
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
-    */
 
 }
