@@ -11,7 +11,7 @@ class WelcomeVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = AppColor.background
         // Do any additional setup after loading the view.
     }
     
