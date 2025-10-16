@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		EEECAC952EA13BE200E5079A /* ReceitasApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReceitasApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEECAC952EA13BE200E5079A /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		EEECACA72EA13BE400E5079A /* Exceptions for "ReceitasApp" folder in "ReceitasApp" target */ = {
+		EEECACA72EA13BE400E5079A /* Exceptions for "ReceitasApp" folder in "Recipes" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = EEECAC942EA13BE200E5079A /* ReceitasApp */;
+			target = EEECAC942EA13BE200E5079A /* Recipes */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -24,7 +24,7 @@
 		EEECAC972EA13BE200E5079A /* ReceitasApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				EEECACA72EA13BE400E5079A /* Exceptions for "ReceitasApp" folder in "ReceitasApp" target */,
+				EEECACA72EA13BE400E5079A /* Exceptions for "ReceitasApp" folder in "Recipes" target */,
 			);
 			path = ReceitasApp;
 			sourceTree = "<group>";
@@ -53,7 +53,7 @@
 		EEECAC962EA13BE200E5079A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EEECAC952EA13BE200E5079A /* ReceitasApp.app */,
+				EEECAC952EA13BE200E5079A /* Recipes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EEECAC942EA13BE200E5079A /* ReceitasApp */ = {
+		EEECAC942EA13BE200E5079A /* Recipes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EEECACA82EA13BE400E5079A /* Build configuration list for PBXNativeTarget "ReceitasApp" */;
+			buildConfigurationList = EEECACA82EA13BE400E5079A /* Build configuration list for PBXNativeTarget "Recipes" */;
 			buildPhases = (
 				EEECAC912EA13BE200E5079A /* Sources */,
 				EEECAC922EA13BE200E5079A /* Frameworks */,
@@ -76,11 +76,11 @@
 			fileSystemSynchronizedGroups = (
 				EEECAC972EA13BE200E5079A /* ReceitasApp */,
 			);
-			name = ReceitasApp;
+			name = Recipes;
 			packageProductDependencies = (
 			);
 			productName = ReceitasApp;
-			productReference = EEECAC952EA13BE200E5079A /* ReceitasApp.app */;
+			productReference = EEECAC952EA13BE200E5079A /* Recipes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -98,7 +98,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EEECAC902EA13BE200E5079A /* Build configuration list for PBXProject "ReceitasApp" */;
+			buildConfigurationList = EEECAC902EA13BE200E5079A /* Build configuration list for PBXProject "Recipes" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -112,7 +112,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EEECAC942EA13BE200E5079A /* ReceitasApp */,
+				EEECAC942EA13BE200E5079A /* Recipes */,
 			);
 		};
 /* End PBXProject section */
@@ -143,6 +143,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2H962B5LWQ;
@@ -150,9 +151,9 @@
 				INFOPLIST_FILE = ReceitasApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -171,6 +172,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2H962B5LWQ;
@@ -178,9 +180,9 @@
 				INFOPLIST_FILE = ReceitasApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,7 +318,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EEECAC902EA13BE200E5079A /* Build configuration list for PBXProject "ReceitasApp" */ = {
+		EEECAC902EA13BE200E5079A /* Build configuration list for PBXProject "Recipes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EEECACAB2EA13BE400E5079A /* Debug */,
@@ -325,7 +327,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EEECACA82EA13BE400E5079A /* Build configuration list for PBXNativeTarget "ReceitasApp" */ = {
+		EEECACA82EA13BE400E5079A /* Build configuration list for PBXNativeTarget "Recipes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EEECACA92EA13BE400E5079A /* Debug */,
