@@ -43,8 +43,6 @@ extension UIViewController {
             viewWithTag.removeFromSuperview()
         }
     }
-
-    
 }
 
 extension UIApplication {

@@ -11,11 +11,45 @@ import UIKit
 class BaseViewController: UIViewController{
     
     let contentView = UIView()
-    let loadView = CustomLoader()
+    private let loadView = CustomLoader()
+    private var contentViewTopConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
-        closeKeyboardOnTouch()
         self.view.backgroundColor = AppColor.background
+        closeKeyboardOnTouch()
+        configureLoadView()
+        super.viewDidLoad()
+        configureContentView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    private func configureContentView() {
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentView)
+        contentView.backgroundColor = AppColor.background
+        
+        contentViewTopConstraint = contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        NSLayoutConstraint.activate([
+            contentViewTopConstraint,
+            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+
+// MARK: - Loading
+extension BaseViewController {
+    private func configureLoadView() {
         loadView.translatesAutoresizingMaskIntoConstraints = false
         loadView.tag = 12321
         loadView.setFullScreen(true)
@@ -27,17 +61,6 @@ class BaseViewController: UIViewController{
             loadView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         self.loadView.alpha = 0
-        super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     func setLoading(visible: Bool, fullScreen: Bool = true){
@@ -52,16 +75,15 @@ class BaseViewController: UIViewController{
         loadView.animate()
         loadView.alpha = 1.0
     }
-    
+}
+
+// MARK: - NavBar
+extension BaseViewController {
     func addBackButton(title: String = "") {
         let topBar = UIView()
         let backButton = UIButton(type: .system)
         let titleLabel = UILabel()
         
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentView)
-        
-        contentView.backgroundColor = AppColor.background
         topBar.backgroundColor = AppColor.background
         view.addSubview(topBar)
         topBar.translatesAutoresizingMaskIntoConstraints = false
@@ -70,12 +92,11 @@ class BaseViewController: UIViewController{
             topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             topBar.heightAnchor.constraint(equalToConstant: 56),
-            
-            contentView.topAnchor.constraint(equalTo: topBar.bottomAnchor),
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        contentViewTopConstraint.isActive = false
+        contentViewTopConstraint = contentView.topAnchor.constraint(equalTo: topBar.bottomAnchor)
+        contentViewTopConstraint.isActive = true
+        self.view.layoutIfNeeded()
 
         // Back button
         let backImage = UIImage(named: ImageNameConstants.back)
