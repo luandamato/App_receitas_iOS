@@ -4,16 +4,13 @@
 //
 //  Created by Luan Damato on 16/10/25.
 //
-
-import Foundation
 import UIKit
 
-class BaseViewController: UIViewController{
-    
+class BaseViewController: UIViewController {
     let contentView = UIView()
     private let loadView = CustomLoader()
     private var contentViewTopConstraint: NSLayoutConstraint!
-    
+
     override func viewDidLoad() {
         self.view.backgroundColor = AppColor.background
         closeKeyboardOnTouch()
@@ -21,7 +18,7 @@ class BaseViewController: UIViewController{
         super.viewDidLoad()
         configureContentView()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -31,12 +28,12 @@ class BaseViewController: UIViewController{
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+
     private func configureContentView() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentView)
         contentView.backgroundColor = AppColor.background
-        
+
         contentViewTopConstraint = contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         NSLayoutConstraint.activate([
             contentViewTopConstraint,
@@ -62,7 +59,7 @@ extension BaseViewController {
         ])
         self.loadView.alpha = 0
     }
-    
+
     func setLoading(visible: Bool, fullScreen: Bool = true){
         self.view.bringSubviewToFront(loadView)
         if !visible{
@@ -83,7 +80,7 @@ extension BaseViewController {
         let topBar = UIView()
         let backButton = UIButton(type: .system)
         let titleLabel = UILabel()
-        
+
         topBar.backgroundColor = AppColor.background
         view.addSubview(topBar)
         topBar.translatesAutoresizingMaskIntoConstraints = false

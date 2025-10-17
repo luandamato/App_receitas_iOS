@@ -45,6 +45,55 @@ extension UIViewController {
     }
 }
 
+extension UIViewController {
+
+    /// Chame no `viewDidLoad` passando a sua scrollview.
+    func setupKeyboardHandling(_ scrollView: UIScrollView) {
+        
+        NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillShowNotification, object:nil, queue:.main) { [weak self] notification in
+            
+            guard let userInfo = notification.userInfo,
+                  let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+            
+            let keyboardFrame = keyboardFrameValue.cgRectValue
+            
+            var insets = scrollView.contentInset
+            insets.bottom = keyboardFrame.height + 16 // margem extra opcional
+            
+            scrollView.contentInset = insets
+            scrollView.scrollIndicatorInsets = insets
+            
+            // Se algum campo estiver focado, rola até ele:
+            if let firstResponder = self?.view.findFirstResponder(),
+               let responderFrameInScroll = firstResponder.superview?.convert(firstResponder.frame, to: scrollView) {
+                scrollView.scrollRectToVisible(responderFrameInScroll, animated:true)
+            }
+            
+         }
+        
+         NotificationCenter.default.addObserver(forName:UIResponder.keyboardWillHideNotification, object:nil, queue:.main) { _ in
+            
+             var insets = scrollView.contentInset
+             insets.bottom = 0
+            
+             scrollView.contentInset = insets
+             scrollView.scrollIndicatorInsets = insets
+            
+         }
+     }
+}
+
+// Helper para achar o responder atual:
+extension UIView {
+    func findFirstResponder() -> UIView? {
+       if isFirstResponder { return self }
+       for subview in subviews {
+           if let responder = subview.findFirstResponder() { return responder }
+       }
+       return nil
+   }
+}
+
 extension UIApplication {
     
     var keyWindow: UIWindow? {
