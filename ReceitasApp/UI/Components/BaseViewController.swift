@@ -13,6 +13,7 @@ class BaseViewController: UIViewController{
     let loadView = CustomLoader()
     
     override func viewDidLoad() {
+        self.view.backgroundColor = AppColor.background
         loadView.translatesAutoresizingMaskIntoConstraints = false
         loadView.tag = 12321
         loadView.setFullScreen(true)
@@ -25,6 +26,16 @@ class BaseViewController: UIViewController{
         ])
         self.loadView.alpha = 0
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     func setLoading(visible: Bool, fullScreen: Bool = true){

@@ -14,35 +14,3 @@ enum AppColor {
     static let error = UIColor(named: "ErrorColor")!
     static let warning = UIColor(named: "WarningColor")!
 }
-
-extension UIButton {
-    func applyPrimaryStyle() {
-        self.backgroundColor = AppColor.primaryButton
-        self.setTitleColor(.white, for: .normal)
-        self.layer.cornerRadius = 10
-    }
-
-    func applySecondaryStyle() {
-        self.backgroundColor = AppColor.secondaryButton
-        self.setTitleColor(AppColor.primary, for: .normal)
-        self.layer.cornerRadius = 10
-    }
-}
-
-extension UIView {
-    func applyBackgroundStyle() {
-        self.backgroundColor = AppColor.background
-    }
-}
-
-extension UILabel {
-    func applyTitleStyle() {
-        self.textColor = AppColor.title
-        self.font = UIFont.boldSystemFont(ofSize: 22)
-    }
-
-    func applyBodyStyle() {
-        self.textColor = AppColor.body
-        self.font = UIFont.systemFont(ofSize: 16)
-    }
-}

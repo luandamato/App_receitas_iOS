@@ -12,7 +12,7 @@ class WelcomeVC: BaseViewController {
     // MARK: - Subviews\
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "welcome_bg") // Substitua pelo nome da sua imagem
+        imageView.image = UIImage(named: "welcome_bg")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -20,7 +20,7 @@ class WelcomeVC: BaseViewController {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "welcome_logo") // Substitua pelo nome da sua imagem
+        imageView.image = UIImage(named: "welcome_logo")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -68,24 +68,19 @@ class WelcomeVC: BaseViewController {
             logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             // Login button
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            loginButton.bottomAnchor.constraint(equalTo: registerButton.topAnchor, constant: -16),
+            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            loginButton.bottomAnchor.constraint(equalTo: registerButton.topAnchor, constant: -SizeConstants.smallMargin),
 
-            registerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            registerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32)
+            registerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
+            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            registerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -SizeConstants.mediumMargin)
 
         ])
     }
     
     private func onLoginClick() {
-        loginButton.setLoading(visible: true)
-        registerButton.setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.loginButton.setLoading(visible: false)
-            self.registerButton.setLoading(visible: false)
-        }
+        self.navigationController?.pushViewController(LoginVC(), animated: true)
     }
     
     private func onRegisterClcik() {
