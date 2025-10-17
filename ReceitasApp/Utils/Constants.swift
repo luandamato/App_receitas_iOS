@@ -12,18 +12,22 @@ class SizeConstants {
     static let smallMargin: CGFloat = 16
 }
 
-class StringNameConstants {
-    static let signin = "signin"
-    static let signup = "signup"
-    static let welcome = "welcome"
-    static let email = "email"
-    static let fillEmail = "fillEmail"
-    static let password = "password"
-    static let fillPassword = "fillPassword"
-    static let forgotPassword = "forgotPassword"
-    static let noAccount = "noAccount"
-    static let loginSignup = "loginSignup"
-    static let home = "home"
+enum StringNameConstants: String {
+    case signin
+    case signup
+    case welcome
+    case email
+    case fillEmail
+    case password
+    case fillPassword
+    case forgotPassword
+    case noAccount
+    case loginSignup
+    case recoveryPassword
+    case recoveryPasswordDescription
+    case recoveryPasswordButton
+    case emailSent
+    case home
 }
 
 class ImageNameConstants {

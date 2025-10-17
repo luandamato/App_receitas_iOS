@@ -49,11 +49,9 @@ class CustomEditText : UIView, UITextFieldDelegate {
     }
     
     @IBInspectable
-    var texto : String = "" {
+    private var texto : String = "" {
         didSet {
             self.editText.text = texto
-            self.editText.font = UIFont.systemFont(ofSize: 16)
-            self.editText.textColor = AppColor.body
         }
     }
     
@@ -74,7 +72,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
                 let image = getImageEye()
                 
                 button.setImage(image, for: .normal)
-                button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 5, right: 10)
                 button.frame = CGRect(x: self.frame.size.width , y: 5, width: 30, height: 30)
                 button.addTarget(self, action: #selector(verCampo), for: .touchUpInside)
                 self.editText.rightView = button
@@ -176,10 +173,13 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.editText.delegate = self
         
         
-        stack.alignment = .fill
-        stack.distribution = .equalSpacing
-        stack.axis = .vertical
-        stack.spacing = 12
+        self.stack.alignment = .fill
+        self.stack.distribution = .equalSpacing
+        self.stack.axis = .vertical
+        self.stack.spacing = 12
+        
+        self.editText.font = UIFont.systemFont(ofSize: 16)
+        self.editText.textColor = AppColor.body
         
         viewBorda.addSubview(viewBlock)
         viewBorda.addSubview(editText)
@@ -267,9 +267,11 @@ extension CustomEditText{
         endEditing(true)
     }
     
-    // MARK: - Gets
+    func getTexto() -> String{
+        return self.editText.text ?? ""
+    }
     
-    func getTexto() -> String?{
-        return self.editText.text
+    func set(texto: String){
+        self.editText.text = texto
     }
 }

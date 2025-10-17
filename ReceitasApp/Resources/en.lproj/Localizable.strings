@@ -20,4 +20,10 @@
 "noAccount" = "Are you not registered yet? ";
 "loginSignup" = "Sign Up";
 
+//ForgotPassword
+"recoveryPassword" = "Recovery password";
+"recoveryPasswordDescription" = "We will send a recovery  password email to you";
+"recoveryPasswordButton" = "Continue";
+"emailSent" = "Email successfully sent";
+
 "home" = "Home";

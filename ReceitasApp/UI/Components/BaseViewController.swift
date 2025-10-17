@@ -14,6 +14,7 @@ class BaseViewController: UIViewController{
     let loadView = CustomLoader()
     
     override func viewDidLoad() {
+        closeKeyboardOnTouch()
         self.view.backgroundColor = AppColor.background
         loadView.translatesAutoresizingMaskIntoConstraints = false
         loadView.tag = 12321

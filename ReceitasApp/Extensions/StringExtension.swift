@@ -8,8 +8,8 @@
 import UIKit
 
 extension String {
-    static func stringFor(text: String) -> String {
-        return NSLocalizedString(text, comment: "")
+    static func stringFor(text: StringNameConstants) -> String {
+        return NSLocalizedString(text.rawValue, comment: "")
     }
     
 }

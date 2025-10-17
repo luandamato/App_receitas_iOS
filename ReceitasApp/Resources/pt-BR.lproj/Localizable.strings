@@ -20,4 +20,10 @@
 "noAccount" = "Ainda não tem cadastro? ";
 "loginSignup" = "cadastre-se";
 
+//ForgotPassword
+"recoveryPassword" = "Recuperação de senha";
+"recoveryPasswordDescription" = "Enviaremos um email pra você redefinir sua senha";
+"recoveryPasswordButton" = "Continuar";
+"emailSent" = "Email enviado com sucesso";
+
 "home" = "Início";

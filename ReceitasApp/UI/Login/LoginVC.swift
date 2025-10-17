@@ -19,6 +19,7 @@ class LoginVC: BaseViewController {
     private lazy var txtEmail: CustomEditText = {
         let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.email),
                                   placeholder: String.stringFor(text: StringNameConstants.fillEmail))
+        view.tipoTeclado = .emailAddress
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -144,7 +145,8 @@ class LoginVC: BaseViewController {
     }
     
     @objc private func onForgotPasswordClick() {
-        print("Botão sublinhado clicado!")
+        let vc = ForgotPasswordVC(email: txtEmail.getTexto())
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
 }

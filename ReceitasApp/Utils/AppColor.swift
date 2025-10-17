@@ -1,7 +1,7 @@
 import UIKit
 
 enum AppColor {
-    static let primary = UIColor(named: "PrimaryColor")!
+    static let primary = UIColor(named: "PrimaryAppColor")!
     static let background = UIColor(named: "BackgroundColor")!
     static let title = UIColor(named: "TitleColor")!
     static let body = UIColor(named: "BodyColor")!

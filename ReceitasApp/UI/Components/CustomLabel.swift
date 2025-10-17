@@ -60,6 +60,7 @@ class CustomLabel : UILabel {
     
     private func updateTitulo() {
         self.text = texto
+        self.numberOfLines = 0
     }
     
     private func updateFont() {
