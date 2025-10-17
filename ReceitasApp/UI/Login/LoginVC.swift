@@ -39,17 +39,55 @@ class LoginVC: BaseViewController {
         return button
     }()
     
-    private lazy var registerButton: CustomButton = {
-        let button = CustomButton(type: .secondary, text: String.stringFor(text: StringNameConstants.signup), onTap: {
-            self.onRegisterClcik()
-        })
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var forgotPasswordBtn: UIButton = {
+        let view = UIButton(type: .system)
+        let attributedTitle = NSAttributedString(
+            string: String.stringFor(text: StringNameConstants.forgotPassword),
+            attributes: [
+                .underlineStyle: NSUnderlineStyle.single.rawValue,
+                .foregroundColor: AppColor.primaryButton,
+                .font: UIFont.systemFont(ofSize: 12)
+            ]
+        )
+        view.setAttributedTitle(attributedTitle, for: .normal)
+        view.backgroundColor = .clear
+        view.titleLabel?.textAlignment = .center
+        view.addTarget(self, action: #selector(onForgotPasswordClick), for: .touchUpInside)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
+    
+    private lazy var registerButton: UIButton = {
+        let view = UIButton(type: .system)
+        
+        let normalText = String.stringFor(text: StringNameConstants.noAccount)
+        let underlinedText = String.stringFor(text: StringNameConstants.loginSignup)
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: AppColor.body,
+            .font: UIFont.systemFont(ofSize: 12)
+        ]
+        let underlinedAttributes: [NSAttributedString.Key: Any] = [
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .foregroundColor: AppColor.primaryButton,
+            .font: UIFont.systemFont(ofSize: 12)
+        ]
+        let attributedString = NSMutableAttributedString(string: normalText, attributes: normalAttributes)
+        let underlinedAttributedString = NSAttributedString(string: underlinedText, attributes: underlinedAttributes)
+        attributedString.append(underlinedAttributedString)
+        view.setAttributedTitle(attributedString, for: .normal)
+        
+        view.backgroundColor = .clear
+        view.titleLabel?.textAlignment = .center
+        view.addTarget(self, action: #selector(onRegisterClcik), for: .touchUpInside)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addBackButton()
         setupViews()
     }
 
@@ -60,9 +98,10 @@ class LoginVC: BaseViewController {
         view.addSubview(txtEmail)
         view.addSubview(txtPassword)
         view.addSubview(loginButton)
+        view.addSubview(forgotPasswordBtn)
         view.addSubview(registerButton)
         NSLayoutConstraint.activate([
-            lblTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: SizeConstants.mediumMargin),
+            lblTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SizeConstants.smallMargin),
             lblTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
             lblTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
             lblTitle.heightAnchor.constraint(equalToConstant: 40),
@@ -75,10 +114,13 @@ class LoginVC: BaseViewController {
             txtPassword.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
             txtPassword.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
             
-            // Login button
+            loginButton.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: SizeConstants.bigMargin),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
-            loginButton.bottomAnchor.constraint(equalTo: registerButton.topAnchor, constant: -SizeConstants.smallMargin),
+            
+            forgotPasswordBtn.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: SizeConstants.smallMargin),
+            forgotPasswordBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
+            forgotPasswordBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
 
             registerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
             registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
@@ -89,18 +131,20 @@ class LoginVC: BaseViewController {
     
     private func onLoginClick() {
         loginButton.setLoading(visible: true)
-        registerButton.setLoading(visible: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.loginButton.setLoading(visible: false)
-            self.registerButton.setLoading(visible: false)
         }
     }
     
-    private func onRegisterClcik() {
+    @objc private func onRegisterClcik() {
         setLoading(visible: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.setLoading(visible: false)
         }
+    }
+    
+    @objc private func onForgotPasswordClick() {
+        print("Botão sublinhado clicado!")
     }
 
 }

@@ -20,10 +20,14 @@ class StringNameConstants {
     static let fillEmail = "fillEmail"
     static let password = "password"
     static let fillPassword = "fillPassword"
+    static let forgotPassword = "forgotPassword"
+    static let noAccount = "noAccount"
+    static let loginSignup = "loginSignup"
     static let home = "home"
 }
 
 class ImageNameConstants {
     static let welcomeBG = "welcome_bg"
     static let welcomeLogo = "welcome_logo"
+    static let back = "back"
 }

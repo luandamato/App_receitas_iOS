@@ -180,7 +180,7 @@ class CustomButton : UIButton {
             isEnabled = false
             activityIndicator?.startAnimating()
         } else {
-            setTitleColor(preenchimento ? AppColor.body : cor, for: .normal)
+            setTitleColor(preenchimento ? AppColor.background : cor, for: .normal)
             titleLabel?.layer.opacity = 1
             isEnabled = true
             activityIndicator?.stopAnimating()

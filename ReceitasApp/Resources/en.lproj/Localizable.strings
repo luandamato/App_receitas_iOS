@@ -16,5 +16,8 @@
 "fillEmail" = "Fill your email";
 "password" = "Password";
 "fillPassword" = "Fill your Password";
+"forgotPassword" = "Forgot password";
+"noAccount" = "Are you not registered yet? ";
+"loginSignup" = "Sign Up";
 
 "home" = "Home";

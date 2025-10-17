@@ -41,6 +41,7 @@ class WelcomeVC: BaseViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -79,6 +80,7 @@ class WelcomeVC: BaseViewController {
         ])
     }
     
+    // MARK: - Functions
     private func onLoginClick() {
         self.navigationController?.pushViewController(LoginVC(), animated: true)
     }

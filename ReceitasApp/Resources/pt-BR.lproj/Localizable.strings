@@ -13,8 +13,11 @@
 //Login
 "welcome" = "Bem-vindo de volta!";
 "email" = "Email";
-"fillEmail" = "Preencha seu email";
+"fillEmail" = "Digite seu email";
 "password" = "Senha";
-"fillPassword" = "Preencha sua senha";
+"fillPassword" = "Digite sua senha";
+"forgotPassword" = "Esqueci minha senha";
+"noAccount" = "Ainda não tem cadastro? ";
+"loginSignup" = "cadastre-se";
 
 "home" = "Início";
