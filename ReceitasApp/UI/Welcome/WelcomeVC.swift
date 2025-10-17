@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WelcomeVC: UIViewController {
+class WelcomeVC: BaseViewController {
 
     // MARK: - Subviews\
     private let backgroundImageView: UIImageView = {
@@ -80,11 +80,19 @@ class WelcomeVC: UIViewController {
     }
     
     private func onLoginClick() {
-        registerButton.habilitado.toggle()
+        loginButton.setLoading(visible: true)
+        registerButton.setLoading(visible: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.loginButton.setLoading(visible: false)
+            self.registerButton.setLoading(visible: false)
+        }
     }
     
     private func onRegisterClcik() {
-        loginButton.habilitado.toggle()
+        setLoading(visible: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.setLoading(visible: false)
+        }
     }
 
 }

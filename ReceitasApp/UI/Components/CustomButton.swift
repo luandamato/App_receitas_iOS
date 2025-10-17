@@ -41,9 +41,10 @@ class CustomButton : UIButton {
     }
     
     // Constants
-    let customType: CustomButtonType
+    private let customType: CustomButtonType
     private var onTap: (() -> Void)?
-    let cornerRadius : CGFloat = 24
+    private let cornerRadius : CGFloat = 24
+    private var activityIndicator: UIActivityIndicatorView?
     
     // Interface Builder Fields
     
@@ -161,4 +162,28 @@ class CustomButton : UIButton {
         }
     }
     
+    public func setLoading(visible: Bool) {
+        if visible {
+            if activityIndicator == nil {
+                let indicator = UIActivityIndicatorView(style: .medium)
+                indicator.color = self.titleColor(for: .normal)
+                indicator.translatesAutoresizingMaskIntoConstraints = false
+                addSubview(indicator)
+                NSLayoutConstraint.activate([
+                    indicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+                    indicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+                ])
+                activityIndicator = indicator
+            }
+            setTitleColor(.clear, for: .normal)
+            titleLabel?.layer.opacity = 0
+            isEnabled = false
+            activityIndicator?.startAnimating()
+        } else {
+            setTitleColor(preenchimento ? AppColor.body : cor, for: .normal)
+            titleLabel?.layer.opacity = 1
+            isEnabled = true
+            activityIndicator?.stopAnimating()
+        }
+    }
 }
