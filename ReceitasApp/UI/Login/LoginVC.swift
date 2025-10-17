@@ -11,26 +11,28 @@ class LoginVC: BaseViewController {
 
     // MARK: - Subviews\
     private lazy var lblTitle: CustomLabel = {
-        let view = CustomLabel(text: "Bem-vindo de volta!", type: .title)
+        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.welcome), type: .title)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private lazy var txtEmail: CustomEditText = {
-        let view = CustomEditText(titulo: "Email", placeholder: "Preencha com seu email")
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.email),
+                                  placeholder: String.stringFor(text: StringNameConstants.fillEmail))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private lazy var txtPassword: CustomEditText = {
-        let view = CustomEditText(titulo: "Senha", placeholder: "Preencha com sua senha")
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.password),
+                                  placeholder: String.stringFor(text: StringNameConstants.fillPassword))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.senha = true
         return view
     }()
     
     private lazy var loginButton: CustomButton = {
-        let button = CustomButton(type: .primary, text: NSLocalizedString("signin", comment: "")) { [weak self] in
+        let button = CustomButton(type: .primary, text: String.stringFor(text: StringNameConstants.signin)) { [weak self] in
             self?.onLoginClick()
         }
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +40,7 @@ class LoginVC: BaseViewController {
     }()
     
     private lazy var registerButton: CustomButton = {
-        let button = CustomButton(type: .secondary, text: NSLocalizedString("signup", comment: ""), onTap: {
+        let button = CustomButton(type: .secondary, text: String.stringFor(text: StringNameConstants.signup), onTap: {
             self.onRegisterClcik()
         })
         button.translatesAutoresizingMaskIntoConstraints = false

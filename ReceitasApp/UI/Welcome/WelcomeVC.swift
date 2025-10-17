@@ -12,7 +12,7 @@ class WelcomeVC: BaseViewController {
     // MARK: - Subviews\
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "welcome_bg")
+        imageView.image = UIImage(named: ImageNameConstants.welcomeBG)
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -20,14 +20,14 @@ class WelcomeVC: BaseViewController {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "welcome_logo")
+        imageView.image = UIImage(named: ImageNameConstants.welcomeLogo)
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private lazy var loginButton: CustomButton = {
-        let button = CustomButton(type: .primary, text: NSLocalizedString("signin", comment: "")) { [weak self] in
+        let button = CustomButton(type: .primary, text: String.stringFor(text: StringNameConstants.signin)) { [weak self] in
             self?.onLoginClick()
         }
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +35,7 @@ class WelcomeVC: BaseViewController {
     }()
     
     private lazy var registerButton: CustomButton = {
-        let button = CustomButton(type: .secondary, text: NSLocalizedString("signup", comment: ""), onTap: {
+        let button = CustomButton(type: .secondary, text: String.stringFor(text: StringNameConstants.signup), onTap: {
             self.onRegisterClcik()
         })
         button.translatesAutoresizingMaskIntoConstraints = false

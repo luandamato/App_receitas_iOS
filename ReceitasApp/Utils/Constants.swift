@@ -13,9 +13,17 @@ class SizeConstants {
 }
 
 class StringNameConstants {
-    
+    static let signin = "signin"
+    static let signup = "signup"
+    static let welcome = "welcome"
+    static let email = "email"
+    static let fillEmail = "fillEmail"
+    static let password = "password"
+    static let fillPassword = "fillPassword"
+    static let home = "home"
 }
 
 class ImageNameConstants {
-    
+    static let welcomeBG = "welcome_bg"
+    static let welcomeLogo = "welcome_logo"
 }

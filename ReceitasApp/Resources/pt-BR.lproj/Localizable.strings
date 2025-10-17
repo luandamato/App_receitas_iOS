@@ -5,8 +5,16 @@
   Created by Luan Damato on 16/10/25.
   
 */
-"welcome" = "Bem-vindo";
+
+//Welcome
 "signin" = "Entrar";
 "signup" = "Cadastrar";
-"welcomeDescription" = "descricao do bem vindo";
+
+//Login
+"welcome" = "Bem-vindo de volta!";
+"email" = "Email";
+"fillEmail" = "Preencha seu email";
+"password" = "Senha";
+"fillPassword" = "Preencha sua senha";
+
 "home" = "Início";
