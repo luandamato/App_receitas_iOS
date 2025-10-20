@@ -38,7 +38,7 @@ class ForgotPasswordVC: BaseViewController {
         return button
     }()
     
-    // MARK:Initializer
+    // MARK: - Initializer
     init(email: String) {
         super.init(nibName: nil, bundle: nil)
         self.txtEmail.set(texto: email)

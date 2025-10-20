@@ -28,6 +28,15 @@ enum StringNameConstants: String {
     case recoveryPasswordButton
     case emailSent
     case home
+    case createAccount
+    case fullName
+    case fullNameHint
+    case birthDate
+    case birthDateHint
+    case createPassword
+    case confirmPassword
+    case register
+    case alredyRegistered
 }
 
 class ImageNameConstants {

@@ -86,10 +86,7 @@ class WelcomeVC: BaseViewController {
     }
     
     private func onRegisterClcik() {
-        setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.setLoading(visible: false)
-        }
+        self.navigationController?.pushViewController(SignupVC(), animated: true)
     }
 
 }

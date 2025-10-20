@@ -8,7 +8,7 @@
 
 //Welcome
 "signin" = "Entrar";
-"signup" = "Cadastrar";
+"signup" = "Criar Conta";
 
 //Login
 "welcome" = "Bem-vindo de volta!";
@@ -25,5 +25,16 @@
 "recoveryPasswordDescription" = "Enviaremos um email pra você redefinir sua senha";
 "recoveryPasswordButton" = "Continuar";
 "emailSent" = "Email enviado com sucesso";
+
+//Register
+"createAccount" = "Crie sua conta";
+"fullName" = "Nome Completo";
+"fullNameHint" = "Seu nome completo";
+"birthDate" = "Data de nascimento";
+"birthDateHint" = "DD/MM/AAAA";
+"createPassword" = "Crie sua senha";
+"confirmPassword" = "Confirme sua senha";
+"register" = "Cadastrar";
+"alredyRegistered" = "Já tem uma conta? ";
 
 "home" = "Início";

@@ -26,4 +26,15 @@
 "recoveryPasswordButton" = "Continue";
 "emailSent" = "Email successfully sent";
 
+//Register
+"createAccount" = "Create your account";
+"fullName" = "Full Name";
+"fullNameHint" = "Your full name";
+"birthDate" = "Birthdate";
+"birthDateHint" = "DD/MM/AAAA";
+"createPassword" = "Create your password";
+"confirmPassword" = "Confirm your password";
+"register" = "Register";
+"alredyRegistered" = "Already have an account? ";
+
 "home" = "Home";

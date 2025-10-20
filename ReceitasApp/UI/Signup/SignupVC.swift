@@ -1,14 +1,15 @@
 //
-//  LoginVC.swift
+//  SignupVC.swift
 //  Recipes
 //
-//  Created by Luan Damato on 16/10/25.
+//  Created by Luan Damato on 19/10/25.
 //
+
 import UIKit
 
-class LoginVC: BaseViewController {
+class SignupVC: BaseViewController {
 
-    let cameFromRegister: Bool
+    let cameFromLogin: Bool
     // MARK: - Subviews
 
     private lazy var scrollView: UIScrollView = {
@@ -25,11 +26,18 @@ class LoginVC: BaseViewController {
     }()
 
     private lazy var lblTitle: CustomLabel = {
-        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.welcome), type: .title)
+        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.createAccount), type: .title)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
+    private lazy var txtName: CustomEditText = {
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.fullName),
+                                  placeholder: String.stringFor(text: StringNameConstants.fullNameHint))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var txtEmail: CustomEditText = {
         let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.email),
                                   placeholder: String.stringFor(text: StringNameConstants.fillEmail))
@@ -37,45 +45,43 @@ class LoginVC: BaseViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    private lazy var txtBirthdate: CustomEditText = {
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.birthDate),
+                                  placeholder: String.stringFor(text: StringNameConstants.birthDateHint))
+        view.tipoTeclado = .decimalPad
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var txtPassword: CustomEditText = {
-        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.password),
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.createPassword),
+                                  placeholder: String.stringFor(text: StringNameConstants.fillPassword))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.senha = true
+        return view
+    }()
+    
+    private lazy var txtConfirmPassword: CustomEditText = {
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.confirmPassword),
                                   placeholder: String.stringFor(text: StringNameConstants.fillPassword))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.senha = true
         return view
     }()
 
-    private lazy var loginButton: CustomButton = {
-        let button = CustomButton(type: .primary, text: String.stringFor(text: StringNameConstants.signin)) { [weak self] in
-            self?.onLoginClick()
+    private lazy var signupButton: CustomButton = {
+        let button = CustomButton(type: .primary, text: String.stringFor(text: StringNameConstants.register)) { [weak self] in
+            self?.onSignUpClick()
         }
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    private lazy var forgotPasswordBtn: UIButton = {
+    private lazy var loginButton: UIButton = {
         let view = UIButton(type: .system)
-        let attributedTitle = NSAttributedString(
-            string: String.stringFor(text: StringNameConstants.forgotPassword),
-            attributes: [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,
-                .foregroundColor: AppColor.primaryButton,
-                .font: UIFont.systemFont(ofSize: 12)
-            ]
-        )
-        view.setAttributedTitle(attributedTitle, for: .normal)
-        view.backgroundColor = .clear
-        view.titleLabel?.textAlignment = .center
-        view.addTarget(self, action: #selector(onForgotPasswordClick), for: .touchUpInside)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private lazy var registerButton: UIButton = {
-        let view = UIButton(type: .system)
-        let normalText = String.stringFor(text: StringNameConstants.noAccount)
-        let underlinedText = String.stringFor(text: StringNameConstants.loginSignup)
+        let normalText = String.stringFor(text: StringNameConstants.alredyRegistered)
+        let underlinedText = String.stringFor(text: StringNameConstants.signin)
         let normalAttributes: [NSAttributedString.Key : Any] = [
             .foregroundColor : AppColor.body,
             .font : UIFont.systemFont(ofSize: 12)
@@ -91,19 +97,19 @@ class LoginVC: BaseViewController {
         view.setAttributedTitle(attributedString, for: .normal)
         view.backgroundColor = .clear
         view.titleLabel?.textAlignment = .center
-        view.addTarget(self, action: #selector(onRegisterClcik), for: .touchUpInside)
+        view.addTarget(self, action: #selector(onLoginClick), for: .touchUpInside)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     // MARK: - Initializer
-    init(cameFromRegister: Bool = false) {
-        self.cameFromRegister = cameFromRegister
+    init(cameFromLogin: Bool = false) {
+        self.cameFromLogin = cameFromLogin
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        self.cameFromRegister = true
+        self.cameFromLogin = true
         super.init(coder: coder)
     }
 
@@ -137,12 +143,11 @@ class LoginVC: BaseViewController {
             contentContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor) ,// importante para rolar só verticalmente!
-            contentContainer.heightAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor)
+            contentContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
 
         // Adiciona subviews no container
-        [lblTitle, txtEmail, txtPassword, loginButton, forgotPasswordBtn, registerButton].forEach { contentContainer.addSubview($0) }
+        [lblTitle, txtName, txtEmail, txtBirthdate, txtPassword, txtConfirmPassword, signupButton, loginButton].forEach { contentContainer.addSubview($0) }
 
         // Layout manual dos elementos (ajuste margens conforme necessário)
         NSLayoutConstraint.activate([
@@ -151,49 +156,48 @@ class LoginVC: BaseViewController {
             lblTitle.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
             lblTitle.heightAnchor.constraint(equalToConstant: 40),
 
-            txtEmail.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: SizeConstants.bigMargin),
+            txtName.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: SizeConstants.smallMargin),
+            txtName.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            txtName.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            
+            txtEmail.topAnchor.constraint(equalTo: txtName.bottomAnchor, constant: SizeConstants.smallMargin),
             txtEmail.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
             txtEmail.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-
-            txtPassword.topAnchor.constraint(equalTo: txtEmail.bottomAnchor, constant: SizeConstants.smallMargin),
+            
+            txtBirthdate.topAnchor.constraint(equalTo: txtEmail.bottomAnchor, constant: SizeConstants.smallMargin),
+            txtBirthdate.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            txtBirthdate.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            
+            txtPassword.topAnchor.constraint(equalTo: txtBirthdate.bottomAnchor, constant: SizeConstants.smallMargin),
             txtPassword.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
             txtPassword.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
 
-            loginButton.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: SizeConstants.bigMargin),
+            txtConfirmPassword.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: SizeConstants.smallMargin),
+            txtConfirmPassword.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            txtConfirmPassword.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+
+            signupButton.topAnchor.constraint(equalTo: txtConfirmPassword.bottomAnchor, constant: SizeConstants.bigMargin),
+            signupButton.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            signupButton.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+
+            loginButton.topAnchor.constraint(equalTo: signupButton.bottomAnchor, constant: SizeConstants.smallMargin),
             loginButton.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
             loginButton.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-
-            forgotPasswordBtn.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: SizeConstants.smallMargin),
-            forgotPasswordBtn.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            forgotPasswordBtn.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-
-            // O botão de registro fica sempre no final do conteúdo!
-            registerButton.topAnchor.constraint(greaterThanOrEqualTo: forgotPasswordBtn.bottomAnchor, constant: 0),
-            registerButton.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            registerButton.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-            registerButton.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -SizeConstants.mediumMargin)
+            loginButton.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -SizeConstants.mediumMargin)
         ])
     }
 
     // MARK: - Actions
 
-    private func onLoginClick() {
-        loginButton.setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-            self?.loginButton.setLoading(visible:false)
-        }
-    }
-
-    @objc private func onRegisterClcik() {
-        if cameFromRegister {
+    @objc private func onLoginClick() {
+        if cameFromLogin {
             navigationController?.popViewController(animated: true)
         } else {
-            self.navigationController?.pushViewController(SignupVC(cameFromLogin: true), animated: true)
+            navigationController?.pushViewController(LoginVC(cameFromRegister: true), animated: true)
         }
     }
 
-    @objc private func onForgotPasswordClick() {
-        let vc = ForgotPasswordVC(email: txtEmail.getTexto())
-        self.navigationController?.pushViewController(vc, animated:true)
+    @objc private func onSignUpClick() {
+        
     }
 }
