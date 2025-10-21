@@ -8,6 +8,9 @@ jobs:
   create-pull-request:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Create Pull Request to develop
         uses: repo-sync/pull-request@v2
         with:
