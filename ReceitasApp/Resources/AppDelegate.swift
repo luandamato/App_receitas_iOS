@@ -18,9 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let token = UserDefaults.standard.string(forKey: "token")
         if token != nil {
-            window?.rootViewController = HomeVC()
+            window?.rootViewController = UINavigationController(rootViewController: HomeVC())
         } else {
-            window?.rootViewController = WelcomeVC()
+            window?.rootViewController = UINavigationController(rootViewController: WelcomeVC())
         }
         
         window?.makeKeyAndVisible()

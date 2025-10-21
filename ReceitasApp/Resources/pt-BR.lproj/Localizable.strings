@@ -5,8 +5,36 @@
   Created by Luan Damato on 16/10/25.
   
 */
-"welcome" = "Bem-vindo";
+
+//Welcome
 "signin" = "Entrar";
-"signup" = "Cadastrar";
-"welcomeDescription" = "descricao do bem vindo";
+"signup" = "Criar Conta";
+
+//Login
+"welcome" = "Bem-vindo de volta!";
+"email" = "Email";
+"fillEmail" = "Digite seu email";
+"password" = "Senha";
+"fillPassword" = "Digite sua senha";
+"forgotPassword" = "Esqueci minha senha";
+"noAccount" = "Ainda não tem cadastro? ";
+"loginSignup" = "cadastre-se";
+
+//ForgotPassword
+"recoveryPassword" = "Recuperação de senha";
+"recoveryPasswordDescription" = "Enviaremos um email pra você redefinir sua senha";
+"recoveryPasswordButton" = "Continuar";
+"emailSent" = "Email enviado com sucesso";
+
+//Register
+"createAccount" = "Crie sua conta";
+"fullName" = "Nome Completo";
+"fullNameHint" = "Seu nome completo";
+"birthDate" = "Data de nascimento";
+"birthDateHint" = "DD/MM/AAAA";
+"createPassword" = "Crie sua senha";
+"confirmPassword" = "Confirme sua senha";
+"register" = "Cadastrar";
+"alredyRegistered" = "Já tem uma conta? ";
+
 "home" = "Início";
