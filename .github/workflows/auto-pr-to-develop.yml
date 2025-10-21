@@ -19,7 +19,7 @@ jobs:
 
       - name: Create Pull Request if not exists
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           BASE_BRANCH: develop
         run: |
           HEAD_BRANCH="${GITHUB_REF#refs/heads/}"
