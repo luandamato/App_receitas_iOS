@@ -1,12 +1,13 @@
 name: Auto PR from feature/* to develop
 
 on:
-  create:
+  push:
     branches:
       - 'feature/**'
 
 jobs:
   create-pull-request:
+    if: github.event.created == true
     runs-on: ubuntu-latest
     steps:
       - name: Create Pull Request to develop
