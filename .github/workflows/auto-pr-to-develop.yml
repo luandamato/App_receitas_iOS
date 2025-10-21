@@ -40,6 +40,6 @@ jobs:
             gh pr create \
               --base "$BASE_BRANCH" \
               --head "$HEAD_BRANCH" \
-              --title "Merge ${HEAD_BRANCH} into ${BASE_BRANCH}" \
+              --title "PR automático - Merge ${HEAD_BRANCH} into ${BASE_BRANCH}" \
               --body "Pull request automático criado por push na branch ${HEAD_BRANCH}."
           fi
