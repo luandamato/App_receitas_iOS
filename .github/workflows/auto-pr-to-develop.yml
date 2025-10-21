@@ -3,7 +3,11 @@ name: Auto Pull Request from feature/* to develop
 on:
   push:
     branches:
-      - 'feature/*'  # dispara quando há push em qualquer branch que comece com "feature/"
+      - 'feature/*'
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   create-pull-request:
@@ -18,12 +22,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_BRANCH: develop
         run: |
-          # pega o nome da branch atual
           HEAD_BRANCH="${GITHUB_REF#refs/heads/}"
 
           echo "Verificando PRs existentes de ${HEAD_BRANCH} para ${BASE_BRANCH}..."
 
-          # Verifica se já existe um PR aberto dessa branch para develop
           PR_EXISTE=$(gh pr list \
             --base "$BASE_BRANCH" \
             --head "$HEAD_BRANCH" \
