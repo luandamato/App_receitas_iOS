@@ -1,0 +1,19 @@
+name: Auto PR from feature/* to develop
+
+on:
+  create:
+    branches:
+      - 'feature/**'
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Pull Request to develop
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: develop
+          branch: ${{ github.ref_name }}
+          title: 'Auto PR: ${{ github.ref_name }} -> develop'
+          body: 'Pull request automático criado ao abrir a branch ${{ github.ref_name }}'
