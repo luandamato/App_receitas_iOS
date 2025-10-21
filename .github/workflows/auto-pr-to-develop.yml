@@ -1,22 +1,43 @@
-name: Auto PR from feature/* to develop
+name: Auto Pull Request from feature/* to develop
+
 on:
   push:
     branches:
-      - 'feature/**'
+      - 'feature/*'  # dispara quando há push em qualquer branch que comece com "feature/"
 
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Pull Request to develop
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: ${{ github.ref_name }}
-          destination_branch: develop
-          pr_title: 'Auto PR: ${{ github.ref_name }} -> develop'
-          pr_body: 'Pull request automático criado ao abrir a branch ${{ github.ref_name }}'
+      - name: Create Pull Request if not exists
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_BRANCH: develop
+        run: |
+          # pega o nome da branch atual
+          HEAD_BRANCH="${GITHUB_REF#refs/heads/}"
+
+          echo "Verificando PRs existentes de ${HEAD_BRANCH} para ${BASE_BRANCH}..."
+
+          # Verifica se já existe um PR aberto dessa branch para develop
+          PR_EXISTE=$(gh pr list \
+            --base "$BASE_BRANCH" \
+            --head "$HEAD_BRANCH" \
+            --state open \
+            --json number \
+            --jq '.[0].number' || true)
+
+          if [ -n "$PR_EXISTE" ]; then
+            echo "✅ Já existe um PR aberto (#$PR_EXISTE). Nada a fazer."
+          else
+            echo "🆕 Criando PR de ${HEAD_BRANCH} → ${BASE_BRANCH}..."
+            gh pr create \
+              --base "$BASE_BRANCH" \
+              --head "$HEAD_BRANCH" \
+              --title "Merge ${HEAD_BRANCH} into ${BASE_BRANCH}" \
+              --body "Pull request automático criado por push na branch ${HEAD_BRANCH}."
+          fi
