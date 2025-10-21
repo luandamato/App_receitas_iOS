@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  Recipes
+
+  Created by Luan Damato on 16/10/25.
+  
+*/
+
+//Welcome
+"signin" = "Sign In";
+"signup" = "Sign Up";
+
+//Login
+"welcome" = "Welcome back!";
+"email" = "Email";
+"fillEmail" = "Fill your email";
+"password" = "Password";
+"fillPassword" = "Fill your Password";
+"forgotPassword" = "Forgot password";
+"noAccount" = "Are you not registered yet? ";
+"loginSignup" = "Sign Up";
+
+//ForgotPassword
+"recoveryPassword" = "Recovery password";
+"recoveryPasswordDescription" = "We will send a recovery  password email to you";
+"recoveryPasswordButton" = "Continue";
+"emailSent" = "Email successfully sent";
+
+//Register
+"createAccount" = "Create your account";
+"fullName" = "Full Name";
+"fullNameHint" = "Your full name";
+"birthDate" = "Birthdate";
+"birthDateHint" = "DD/MM/AAAA";
+"createPassword" = "Create your password";
+"confirmPassword" = "Confirm your password";
+"register" = "Register";
+"alredyRegistered" = "Already have an account? ";
+
+"home" = "Home";
