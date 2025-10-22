@@ -11,7 +11,7 @@ class HomeVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .orange
+        self.view.backgroundColor = .blue
         // Do any additional setup after loading the view.
     }
     
