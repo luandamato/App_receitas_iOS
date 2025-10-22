@@ -25,75 +25,44 @@ class AboutUserVC: BaseViewController {
     }()
 
     private lazy var lblTitle: CustomLabel = {
-        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.welcome), type: .title)
+        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.configureProfile), type: .title)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
-    private lazy var txtEmail: CustomEditText = {
-        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.email),
-                                  placeholder: String.stringFor(text: StringNameConstants.fillEmail))
-        view.tipoTeclado = .emailAddress
+    
+    private lazy var lblSubTitle: CustomLabel = {
+        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.configureProfileDescription), type: .body)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
-    private lazy var txtPassword: CustomEditText = {
-        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.password),
-                                  placeholder: String.stringFor(text: StringNameConstants.fillPassword))
+    
+    private lazy var imgUser: UserPhotoPickerView = {
+        let view = UserPhotoPickerView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.senha = true
+        view.delegate = self
         return view
     }()
 
-    private lazy var loginButton: CustomButton = {
-        let button = CustomButton(type: .primary, text: String.stringFor(text: StringNameConstants.signin)) { [weak self] in
-            self?.onLoginClick()
+    private lazy var txtUserName: CustomEditText = {
+        let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.username),
+                                  placeholder: String.stringFor(text: StringNameConstants.usernameHint))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var txtBio: CustomTextArea = {
+        let view = CustomTextArea(titulo: String.stringFor(text: StringNameConstants.bio))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.limiteCaracteres = 500
+        return view
+    }()
+
+    private lazy var btnUpdate: CustomButton = {
+        let button = CustomButton(type: .primary, text: String.stringFor(text: StringNameConstants.update)) { [weak self] in
+            self?.onUpdateClick()
         }
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
-    }()
-
-    private lazy var forgotPasswordBtn: UIButton = {
-        let view = UIButton(type: .system)
-        let attributedTitle = NSAttributedString(
-            string: String.stringFor(text: StringNameConstants.forgotPassword),
-            attributes: [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,
-                .foregroundColor: AppColor.primaryButton,
-                .font: UIFont.systemFont(ofSize: 12)
-            ]
-        )
-        view.setAttributedTitle(attributedTitle, for: .normal)
-        view.backgroundColor = .clear
-        view.titleLabel?.textAlignment = .center
-        view.addTarget(self, action: #selector(onForgotPasswordClick), for: .touchUpInside)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private lazy var registerButton: UIButton = {
-        let view = UIButton(type: .system)
-        let normalText = String.stringFor(text: StringNameConstants.noAccount)
-        let underlinedText = String.stringFor(text: StringNameConstants.loginSignup)
-        let normalAttributes: [NSAttributedString.Key : Any] = [
-            .foregroundColor : AppColor.body,
-            .font : UIFont.systemFont(ofSize: 12)
-        ]
-        let underlinedAttributes : [NSAttributedString.Key : Any] = [
-            .underlineStyle : NSUnderlineStyle.single.rawValue,
-            .foregroundColor : AppColor.primaryButton,
-            .font : UIFont.systemFont(ofSize: 12)
-        ]
-        let attributedString = NSMutableAttributedString(string: normalText, attributes: normalAttributes)
-        let underlinedAttributedString = NSAttributedString(string: underlinedText, attributes: underlinedAttributes)
-        attributedString.append(underlinedAttributedString)
-        view.setAttributedTitle(attributedString, for: .normal)
-        view.backgroundColor = .clear
-        view.titleLabel?.textAlignment = .center
-        view.addTarget(self, action: #selector(onRegisterClcik), for: .touchUpInside)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
     }()
     
     // MARK: - Initializer
@@ -142,59 +111,46 @@ class AboutUserVC: BaseViewController {
         ])
 
         // Adiciona subviews no container
-        [lblTitle, txtEmail, txtPassword, loginButton, forgotPasswordBtn, registerButton].forEach { contentContainer.addSubview($0) }
+        [lblTitle, lblSubTitle, imgUser, txtUserName, txtBio, btnUpdate].forEach { contentContainer.addSubview($0) }
 
         // Layout manual dos elementos (ajuste margens conforme necessário)
         NSLayoutConstraint.activate([
             lblTitle.topAnchor.constraint(equalTo: contentContainer.topAnchor),
             lblTitle.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
             lblTitle.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-            lblTitle.heightAnchor.constraint(equalToConstant: 40),
 
-            txtEmail.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: SizeConstants.bigMargin),
-            txtEmail.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            txtEmail.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            lblSubTitle.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: SizeConstants.smallMargin),
+            lblSubTitle.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            lblSubTitle.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
 
-            txtPassword.topAnchor.constraint(equalTo: txtEmail.bottomAnchor, constant: SizeConstants.smallMargin),
-            txtPassword.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            txtPassword.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            imgUser.topAnchor.constraint(equalTo: lblSubTitle.bottomAnchor, constant: SizeConstants.mediumMargin),
+            imgUser.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            imgUser.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
 
-            loginButton.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: SizeConstants.bigMargin),
-            loginButton.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            loginButton.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-
-            forgotPasswordBtn.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: SizeConstants.smallMargin),
-            forgotPasswordBtn.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            forgotPasswordBtn.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-
-            // O botão de registro fica sempre no final do conteúdo!
-            registerButton.topAnchor.constraint(greaterThanOrEqualTo: forgotPasswordBtn.bottomAnchor, constant: 0),
-            registerButton.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
-            registerButton.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
-            registerButton.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -SizeConstants.mediumMargin)
+            txtUserName.topAnchor.constraint(equalTo: imgUser.bottomAnchor, constant: SizeConstants.smallMargin),
+            txtUserName.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            txtUserName.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            
+            txtBio.topAnchor.constraint(equalTo: txtUserName.bottomAnchor, constant: SizeConstants.smallMargin),
+            txtBio.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            txtBio.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            
+            btnUpdate.topAnchor.constraint(greaterThanOrEqualTo: txtUserName.bottomAnchor, constant: 0),
+            btnUpdate.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: SizeConstants.mediumMargin),
+            btnUpdate.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            btnUpdate.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -SizeConstants.mediumMargin)
         ])
     }
 
     // MARK: - Actions
 
-    private func onLoginClick() {
-        loginButton.setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-            self?.loginButton.setLoading(visible:false)
-        }
-    }
-
-    @objc private func onRegisterClcik() {
-        if cameFromRegister {
-            navigationController?.popViewController(animated: true)
-        } else {
-            self.navigationController?.pushViewController(SignupVC(cameFromLogin: true), animated: true)
-        }
-    }
-
-    @objc private func onForgotPasswordClick() {
-        let vc = ForgotPasswordVC(email: txtEmail.getTexto())
-        self.navigationController?.pushViewController(vc, animated:true)
+    private func onUpdateClick() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
+extension AboutUserVC: UserPhotoPickerViewDelegate {
+    func userPhotoPickerView(_ picker: UserPhotoPickerView, didSelect image: UIImage) {
+        print("📸 Nova imagem selecionada:", image.size)
+    }
+}

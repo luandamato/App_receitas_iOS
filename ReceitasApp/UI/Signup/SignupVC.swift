@@ -198,6 +198,6 @@ class SignupVC: BaseViewController {
     }
 
     @objc private func onSignUpClick() {
-        
+        self.navigationController?.pushViewController(AboutUserVC(cameFromRegister: true), animated: true)
     }
 }

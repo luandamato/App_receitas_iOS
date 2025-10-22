@@ -37,6 +37,13 @@ enum StringNameConstants: String {
     case confirmPassword
     case register
     case alredyRegistered
+    case configureProfile
+    case configureProfileDescription
+    case username
+    case usernameHint
+    case bio
+    case bioHint
+    case update
 }
 
 class ImageNameConstants {
