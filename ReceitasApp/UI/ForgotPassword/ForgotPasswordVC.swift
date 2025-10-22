@@ -60,6 +60,7 @@ class ForgotPasswordVC: BaseViewController {
     
     private func setupViews() {
         view.addSubview(lblTitle)
+        view.addSubview(lblDescription)
         view.addSubview(txtEmail)
         view.addSubview(sendEmailButton)
         NSLayoutConstraint.activate([
@@ -68,7 +69,11 @@ class ForgotPasswordVC: BaseViewController {
             lblTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
             lblTitle.heightAnchor.constraint(equalToConstant: 40),
             
-            txtEmail.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: SizeConstants.bigMargin),
+            lblDescription.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: SizeConstants.smallMargin),
+            lblDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
+            lblDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            
+            txtEmail.topAnchor.constraint(equalTo: lblDescription.bottomAnchor, constant: SizeConstants.bigMargin),
             txtEmail.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
             txtEmail.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
             

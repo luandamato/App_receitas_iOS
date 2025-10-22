@@ -37,4 +37,13 @@
 "register" = "Cadastrar";
 "alredyRegistered" = "Já tem uma conta? ";
 
+//AboutUser
+"configureProfile" = "Configure seu perfil";
+"configureProfileDescription" = "Aqui você configura como outras pessoas veem seu perfil";
+"username" = "Nome de usuário";
+"usernameHint" = "Username";
+"bio" = "Bio";
+"bioHint" = "Escreva um pouco sobre você. (Opcional)";
+"update" = "Atualizar";
+
 "home" = "Início";

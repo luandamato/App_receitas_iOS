@@ -37,4 +37,13 @@
 "register" = "Register";
 "alredyRegistered" = "Already have an account? ";
 
+//AboutUser
+"configureProfile" = "Configure your profile";
+"configureProfileDescription" = "Here you can set how other people see your profile.";
+"username" = "Username";
+"usernameHint" = "Username";
+"bio" = "Bio";
+"bioHint" = "Write a little about you. (Opcional)";
+"update" = "Update";
+
 "home" = "Home";
