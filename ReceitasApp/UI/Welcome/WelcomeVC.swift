@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AppCenterAnalytics
+import AppCenterCrashes
 
 class WelcomeVC: BaseViewController {
 
@@ -48,6 +50,9 @@ class WelcomeVC: BaseViewController {
         super.viewDidLoad()
         setupViews()
         view.backgroundColor = AppColor.background
+        if Crashes.hasCrashedInLastSession {
+            print ("App com falhas na ultima sessao")
+        }
     }
 
     // MARK: - Setup
@@ -82,10 +87,12 @@ class WelcomeVC: BaseViewController {
     
     // MARK: - Functions
     private func onLoginClick() {
+        Analytics.trackEvent("Click", withProperties: ["Path": "welcome.login"])
         self.navigationController?.pushViewController(LoginVC(), animated: true)
     }
     
     private func onRegisterClcik() {
+        Analytics.trackEvent("Click", withProperties: ["Path": "welcome.register"])
         self.navigationController?.pushViewController(SignupVC(), animated: true)
     }
 

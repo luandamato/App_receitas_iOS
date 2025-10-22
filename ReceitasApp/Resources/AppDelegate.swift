@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import AppCenter
+import AppCenterAnalytics
+import AppCenterCrashes
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        
+        configureAppCenter()
         let token = UserDefaults.standard.string(forKey: "token")
         if token != nil {
             window?.rootViewController = UINavigationController(rootViewController: HomeVC())
@@ -25,6 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.makeKeyAndVisible()
         return true
+    }
+    
+    private func configureAppCenter() {
+        AppCenter.start(withAppSecret: "a885ce1d-d602-458f-9953-d098673525bf", services:[
+          Analytics.self,
+          Crashes.self
+        ])
     }
 
 }
