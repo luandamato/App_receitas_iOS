@@ -6,7 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C09128DAD6B4BC33EE32FD43 /* Pods_Recipes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3508E6073806BE55BF432659 /* Pods_Recipes.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		3508E6073806BE55BF432659 /* Pods_Recipes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Recipes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DD8197AE86F807684BAC944 /* Pods-Recipes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipes.debug.xcconfig"; path = "Target Support Files/Pods-Recipes/Pods-Recipes.debug.xcconfig"; sourceTree = "<group>"; };
+		D6029A0512678540688C4309 /* Pods-Recipes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipes.release.xcconfig"; path = "Target Support Files/Pods-Recipes/Pods-Recipes.release.xcconfig"; sourceTree = "<group>"; };
 		EEECAC952EA13BE200E5079A /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -36,17 +43,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09128DAD6B4BC33EE32FD43 /* Pods_Recipes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18559477DD2C61D451B66258 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4DD8197AE86F807684BAC944 /* Pods-Recipes.debug.xcconfig */,
+				D6029A0512678540688C4309 /* Pods-Recipes.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		1DD2700F3D2927FB04AED674 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3508E6073806BE55BF432659 /* Pods_Recipes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EEECAC8C2EA13BE200E5079A = {
 			isa = PBXGroup;
 			children = (
 				EEECAC972EA13BE200E5079A /* ReceitasApp */,
 				EEECAC962EA13BE200E5079A /* Products */,
+				18559477DD2C61D451B66258 /* Pods */,
+				1DD2700F3D2927FB04AED674 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,9 +92,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EEECACA82EA13BE400E5079A /* Build configuration list for PBXNativeTarget "Recipes" */;
 			buildPhases = (
+				4EC2F9CB6CBAB0EE2D7F47A7 /* [CP] Check Pods Manifest.lock */,
 				EEECAC912EA13BE200E5079A /* Sources */,
 				EEECAC922EA13BE200E5079A /* Frameworks */,
 				EEECAC932EA13BE200E5079A /* Resources */,
+				59A3A0E0ECB994C16362036C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -77,8 +106,6 @@
 				EEECAC972EA13BE200E5079A /* ReceitasApp */,
 			);
 			name = Recipes;
-			packageProductDependencies = (
-			);
 			productName = ReceitasApp;
 			productReference = EEECAC952EA13BE200E5079A /* Recipes.app */;
 			productType = "com.apple.product-type.application";
@@ -128,6 +155,46 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4EC2F9CB6CBAB0EE2D7F47A7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Recipes-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		59A3A0E0ECB994C16362036C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Recipes/Pods-Recipes-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EEECAC912EA13BE200E5079A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -141,6 +208,7 @@
 /* Begin XCBuildConfiguration section */
 		EEECACA92EA13BE400E5079A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DD8197AE86F807684BAC944 /* Pods-Recipes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -170,6 +238,7 @@
 		};
 		EEECACAA2EA13BE400E5079A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6029A0512678540688C4309 /* Pods-Recipes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -235,7 +304,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -299,7 +368,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
