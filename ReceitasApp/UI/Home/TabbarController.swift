@@ -11,7 +11,7 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
-        setupAppearance()
+        setupTabBarAppearance()
     }
     
     private func setupTabs() {
@@ -32,11 +32,24 @@ class MainTabBarController: UITabBarController {
                                             selectedImage: UIImage(systemName: "person.fill"))
         
         viewControllers = [favoritesVC, homeVC, profileVC]
+        selectedIndex = 1
     }
     
-    private func setupAppearance() {
-        tabBar.tintColor = .systemOrange      // ícone + texto selecionado
-        tabBar.unselectedItemTintColor = .systemGray // ícones deselecionados
-        tabBar.backgroundColor = .systemBackground
+    private func setupTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        
+        appearance.backgroundColor = AppColor.background.withAlphaComponent(0.8)
+        
+        appearance.backgroundEffect = nil
+        
+        tabBar.tintColor = AppColor.primaryButton
+        tabBar.unselectedItemTintColor = .lightGray
+        
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        
+        tabBar.isTranslucent = true
+        tabBar.backgroundColor = .clear
     }
 }

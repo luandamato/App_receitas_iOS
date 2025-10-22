@@ -10,6 +10,7 @@ class SizeConstants {
     static let bigMargin: CGFloat = 48
     static let mediumMargin: CGFloat = 32
     static let smallMargin: CGFloat = 16
+    static let xSmallMargin: CGFloat = 4
 }
 
 enum StringNameConstants: String {
@@ -50,4 +51,5 @@ class ImageNameConstants {
     static let welcomeBG = "welcome_bg"
     static let welcomeLogo = "welcome_logo"
     static let back = "back"
+    static let icon = "icon"
 }

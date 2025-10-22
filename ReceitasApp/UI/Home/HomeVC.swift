@@ -7,23 +7,117 @@
 
 import UIKit
 
-class HomeVC: UIViewController {
-
+class HomeVC: BaseViewController {
+    
+    private var recipes: [Recipe] = [
+        Recipe(name: "Pasta Carbonara", description: "A classic Italian dish made with eggs, cheese, pancetta, and pepper. vamos deixar esse titulo p=maiorr pra ver se quebra as linhas certinho e a celula vai ficar grande iguallll", imageName: "pasta"),
+        Recipe(name: "Tropical Salad", description: "", imageName: "salad"),
+        Recipe(name: "Chocolate Cake", description: "Rich and moist cake topped with creamy chocolate frosting.", imageName: "cake")
+    ]
+    
+    private let icon: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: ImageNameConstants.icon)
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let lblTitle: CustomLabel = {
+        let view = CustomLabel(text: String.stringFor(text: StringNameConstants.home), type: .title)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var addButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.backgroundColor = AppColor.primaryButton
+        button.tintColor = .white
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.layer.cornerRadius = 30
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.2
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowRadius = 4
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .blue
-        // Do any additional setup after loading the view.
+        setupLayout()
+        setupTableView()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(RecipeCell.self, forCellReuseIdentifier: RecipeCell.identifier)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 180
     }
-    */
+    
+    private func setupLayout() {
+        view.addSubview(icon)
+        view.addSubview(lblTitle)
+        view.addSubview(tableView)
+        view.addSubview(addButton)
+        
+        NSLayoutConstraint.activate([
+            icon.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            icon.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.smallMargin),
+            icon.widthAnchor.constraint(equalToConstant: 48),
+            icon.heightAnchor.constraint(equalToConstant: 48)
+        ])
+        
+        NSLayoutConstraint.activate([
+            lblTitle.centerYAnchor.constraint(equalTo: icon.centerYAnchor),
+            lblTitle.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: SizeConstants.xSmallMargin)
+        ])
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: icon.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            addButton.widthAnchor.constraint(equalToConstant: 60),
+            addButton.heightAnchor.constraint(equalToConstant: 60),
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.smallMargin),
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -SizeConstants.xSmallMargin)
+        ])
+        
+    }
+    
+    @objc private func addButtonTapped() {
+        print("Add new recipe tapped")
+    }
 
+}
+
+extension HomeVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return recipes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeCell.identifier, for: indexPath) as? RecipeCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: recipes[indexPath.row])
+        cell.selectionStyle = .none
+        return cell
+    }
 }
