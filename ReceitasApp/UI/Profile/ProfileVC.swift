@@ -113,44 +113,44 @@ class ProfileVC: BaseViewController {
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            contentContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentContainer.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: SizeConstants.bigMargin),
             contentContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -SizeConstants.bigMargin),
             contentContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            userImageView.topAnchor.constraint(equalTo: contentContainer.topAnchor, constant: 30),
+            userImageView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
             userImageView.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
             userImageView.widthAnchor.constraint(equalToConstant: 120),
             userImageView.heightAnchor.constraint(equalToConstant: 120),
             
-            lblName.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: 12),
+            lblName.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: SizeConstants.smallMargin),
             lblName.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
             
-            lblEmail.topAnchor.constraint(equalTo: lblName.bottomAnchor, constant: 4),
+            lblEmail.topAnchor.constraint(equalTo: lblName.bottomAnchor, constant: SizeConstants.xSmallMargin),
             lblEmail.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
             
-            lblBioTitle.topAnchor.constraint(equalTo: lblEmail.bottomAnchor, constant: 25),
-            lblBioTitle.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: 24),
+            lblBioTitle.topAnchor.constraint(equalTo: lblEmail.bottomAnchor, constant: SizeConstants.mediumMargin),
+            lblBioTitle.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             
-            lblBio.topAnchor.constraint(equalTo: lblBioTitle.bottomAnchor, constant: 4),
-            lblBio.leadingAnchor.constraint(equalTo: lblBioTitle.leadingAnchor),
-            lblBio.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -24),
+            lblBio.topAnchor.constraint(equalTo: lblBioTitle.bottomAnchor, constant: SizeConstants.xSmallMargin),
+            lblBio.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            lblBio.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
             
-            lblSinceTitle.topAnchor.constraint(equalTo: lblBio.bottomAnchor, constant: 20),
-            lblSinceTitle.leadingAnchor.constraint(equalTo: lblBioTitle.leadingAnchor),
+            lblSinceTitle.topAnchor.constraint(equalTo: lblBio.bottomAnchor, constant: SizeConstants.mediumMargin),
+            lblSinceTitle.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             
-            lblSince.topAnchor.constraint(equalTo: lblSinceTitle.bottomAnchor, constant: 4),
-            lblSince.leadingAnchor.constraint(equalTo: lblBioTitle.leadingAnchor),
+            lblSince.topAnchor.constraint(equalTo: lblSinceTitle.bottomAnchor, constant: SizeConstants.xSmallMargin),
+            lblSince.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             
-            buttonsStack.topAnchor.constraint(equalTo: lblSince.bottomAnchor, constant: 30),
-            buttonsStack.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: 24),
-            buttonsStack.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -24),
-            buttonsStack.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -40)
+            buttonsStack.topAnchor.constraint(equalTo: lblSince.bottomAnchor, constant: SizeConstants.bigMargin),
+            buttonsStack.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            buttonsStack.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+            buttonsStack.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor)
         ])
     }
     
