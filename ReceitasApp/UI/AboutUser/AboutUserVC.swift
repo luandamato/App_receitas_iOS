@@ -80,7 +80,7 @@ class AboutUserVC: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addBackButton()
+        addBackButton(action: voltar)
         setupViews()
         self.setupKeyboardHandling(scrollView)
     }
@@ -145,7 +145,18 @@ class AboutUserVC: BaseViewController {
     // MARK: - Actions
 
     private func onUpdateClick() {
-        self.navigationController?.popViewController(animated: true)
+        close()
+    }
+    
+    @objc private func close() {
+        if cameFromRegister{
+            let home = MainTabBarController()
+            home.modalPresentationStyle = .fullScreen
+            self.navigationController?.present(home, animated: false)
+        }
+        else{
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 

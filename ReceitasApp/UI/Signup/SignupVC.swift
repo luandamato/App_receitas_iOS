@@ -58,7 +58,7 @@ class SignupVC: BaseViewController {
         let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.createPassword),
                                   placeholder: String.stringFor(text: StringNameConstants.fillPassword))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.senha = true
+        view.type = .password
         return view
     }()
     
@@ -66,7 +66,7 @@ class SignupVC: BaseViewController {
         let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.confirmPassword),
                                   placeholder: String.stringFor(text: StringNameConstants.fillPassword))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.senha = true
+        view.type = .password
         return view
     }()
 
