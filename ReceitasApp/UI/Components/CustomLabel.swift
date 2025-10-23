@@ -21,7 +21,7 @@ class CustomLabel : UILabel {
         super.init(frame: .zero)
         self.cor = AppColor.primaryButton
         self.texto = text
-        self.fontSize = customType == .title ? 18 : 12
+        self.fontSize = customType == .title ? 20 : 15
         self.cor = customType == .title ? AppColor.title : AppColor.body
         updateTitulo()
         updateFont()

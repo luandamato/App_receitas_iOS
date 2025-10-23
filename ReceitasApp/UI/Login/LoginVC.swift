@@ -42,7 +42,7 @@ class LoginVC: BaseViewController {
         let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.password),
                                   placeholder: String.stringFor(text: StringNameConstants.fillPassword))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.senha = true
+        view.type = .password
         return view
     }()
 
@@ -178,10 +178,9 @@ class LoginVC: BaseViewController {
     // MARK: - Actions
 
     private func onLoginClick() {
-        loginButton.setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-            self?.loginButton.setLoading(visible:false)
-        }
+        let home = MainTabBarController()
+        home.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(home, animated: false)
     }
 
     @objc private func onRegisterClcik() {
