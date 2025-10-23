@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         configureAppCenter()
+        
         let token = UserDefaults.standard.string(forKey: "token")
         if token != nil {
             window?.rootViewController = UINavigationController(rootViewController: HomeVC())
@@ -35,6 +36,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           Analytics.self,
           Crashes.self
         ])
+    }
+    
+    private func verifyTheme() {
+        let darkOn = UserDefaults.standard.bool(forKey: "prefs_darkMode")
+        if #available(iOS 13.0, *) {
+            for scene in UIApplication.shared.connectedScenes {
+                if let ws = scene as? UIWindowScene {
+                    for window in ws.windows {
+                        window.overrideUserInterfaceStyle = darkOn ? .dark : .light
+                    }
+                }
+            }
+        } else {
+            UIApplication.shared.keyWindow?.overrideUserInterfaceStyle = darkOn ? .dark : .light
+        }
     }
 
 }

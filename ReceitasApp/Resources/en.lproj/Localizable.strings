@@ -46,7 +46,20 @@
 "bioHint" = "Write a little about you. (Opcional)";
 "update" = "Update";
 
-"home" = "Receitas";
-"favorites" = "Favoritos";
-"profile" = "Perfil";
+//Profile
+"sinceAt" = "Member since";
+"editProfile" = "Edit Profile";
+"preferences" = "Preferences";
+"myRecipes" = "My Recipes";
+"changePassword" = "Change Password";
+"exit" = "Exit";
+
+"home" = "Recipes";
+"favorites" = "Favorites";
+"profile" = "Profile";
 "search" = "Search";
+
+"selectPhoto" = "Select Photo";
+"fromGallery" = "Take Photo";
+"fromCamera" = "Choose from Gallery";
+"cancel" = "Cancel";

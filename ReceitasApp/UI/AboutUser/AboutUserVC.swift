@@ -162,6 +162,6 @@ class AboutUserVC: BaseViewController {
 
 extension AboutUserVC: UserPhotoPickerViewDelegate {
     func userPhotoPickerView(_ picker: UserPhotoPickerView, didSelect image: UIImage) {
-        print("📸 Nova imagem selecionada:", image.size)
+        
     }
 }

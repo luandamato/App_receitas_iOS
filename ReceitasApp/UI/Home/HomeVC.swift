@@ -71,7 +71,7 @@ class HomeVC: BaseViewController {
         let button = UIButton(type: .custom)
         button.backgroundColor = AppColor.primaryButton
         button.tintColor = .white
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.setImage(UIImage(systemName: ImageNameConstants.plus), for: .normal)
         button.layer.cornerRadius = 30
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOpacity = 0.2
@@ -132,7 +132,7 @@ class HomeVC: BaseViewController {
             tableView.topAnchor.constraint(equalTo: stackViewHeader.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SizeConstants.mediumMargin),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SizeConstants.mediumMargin),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             addButton.widthAnchor.constraint(equalToConstant: 60),
             addButton.heightAnchor.constraint(equalToConstant: 60),
@@ -149,7 +149,7 @@ class HomeVC: BaseViewController {
     }
     
     @objc private func addButtonTapped() {
-        print("Add new recipe tapped")
+        
     }
 
 }
@@ -172,9 +172,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
 extension HomeVC: SearchDelegate {
     func searchRemote(value: String) {
-        print("Procurando na API \(value)")
+        
     }
     func searchLocal(value: String) {
-        print("Procurando local \(value)")
+        
     }
 }

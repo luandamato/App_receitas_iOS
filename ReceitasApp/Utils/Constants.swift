@@ -48,6 +48,16 @@ enum StringNameConstants: String {
     case bio
     case bioHint
     case update
+    case selectPhoto
+    case fromGallery
+    case fromCamera
+    case cancel
+    case sinceAt
+    case editProfile
+    case preferences
+    case myRecipes
+    case changePassword
+    case exit
 }
 
 class ImageNameConstants {
@@ -56,4 +66,6 @@ class ImageNameConstants {
     static let back = "back"
     static let icon = "icon"
     static let search = "search"
+    static let profile = "ic_profile"
+    static let plus = "plus"
 }

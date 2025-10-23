@@ -85,7 +85,7 @@ class ForgotPasswordVC: BaseViewController {
     }
     
     private func onSendEmailClick() {
-        showToast(message: "Email enviado")
+        showToast(message: String.stringFor(text: .emailSent)) 
         self.navigationController?.popViewController(animated: true)
     }
 }

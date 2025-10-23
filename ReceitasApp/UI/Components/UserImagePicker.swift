@@ -12,14 +12,14 @@ class UserPhotoPickerView: UIView {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.image = UIImage(named: "ic_profile")
+        iv.image = UIImage(named: ImageNameConstants.profile)
         return iv
     }()
 
     let addButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = AppColor.primaryButton
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.setImage(UIImage(systemName: ImageNameConstants.plus), for: .normal)
         button.tintColor = .white
         return button
     }()
@@ -69,17 +69,14 @@ class UserPhotoPickerView: UIView {
     @objc private func selectImageTapped() {
             guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return }
 
-            let alert = UIAlertController(title: "Select Photo", message: nil, preferredStyle: .actionSheet)
-
-            alert.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
+        let alert = UIAlertController(title: String.stringFor(text: .selectPhoto), message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: String.stringFor(text: .fromCamera), style: .default, handler: { _ in
                 self.presentImagePicker(source: .camera, from: topController)
             }))
-
-            alert.addAction(UIAlertAction(title: "Choose from Gallery", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: String.stringFor(text: .fromGallery), style: .default, handler: { _ in
                 self.presentImagePicker(source: .photoLibrary, from: topController)
             }))
-
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: String.stringFor(text: .cancel), style: .cancel))
 
             topController.present(alert, animated: true)
         }
