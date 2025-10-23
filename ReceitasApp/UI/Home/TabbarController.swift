@@ -19,15 +19,15 @@ class MainTabBarController: UITabBarController {
         let favoritesVC = UINavigationController(rootViewController: FavoritesVC())
         let profileVC = UINavigationController(rootViewController: ProfileVC())
         
-        homeVC.tabBarItem = UITabBarItem(title: "Home",
+        homeVC.tabBarItem = UITabBarItem(title: String.stringFor(text: .home),
                                          image: UIImage(systemName: "house"),
                                          selectedImage: UIImage(systemName: "house.fill"))
         
-        favoritesVC.tabBarItem = UITabBarItem(title: "Favorites",
+        favoritesVC.tabBarItem = UITabBarItem(title: String.stringFor(text: .favorites),
                                               image: UIImage(systemName: "heart"),
                                               selectedImage: UIImage(systemName: "heart.fill"))
         
-        profileVC.tabBarItem = UITabBarItem(title: "Profile",
+        profileVC.tabBarItem = UITabBarItem(title: String.stringFor(text: .profile),
                                             image: UIImage(systemName: "person"),
                                             selectedImage: UIImage(systemName: "person.fill"))
         
@@ -39,10 +39,8 @@ class MainTabBarController: UITabBarController {
         let appearance = UITabBarAppearance()
         appearance.configureWithTransparentBackground()
         
-        appearance.backgroundColor = AppColor.background.withAlphaComponent(0.8)
-        
+        appearance.backgroundColor = AppColor.background.withAlphaComponent(0.95)
         appearance.backgroundEffect = nil
-        
         tabBar.tintColor = AppColor.primaryButton
         tabBar.unselectedItemTintColor = .lightGray
         

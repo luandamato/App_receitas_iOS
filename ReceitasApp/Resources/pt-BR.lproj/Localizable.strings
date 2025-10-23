@@ -46,7 +46,20 @@
 "bioHint" = "Escreva um pouco sobre você. (Opcional)";
 "update" = "Atualizar";
 
-"home" = "Recipes";
-"favorites" = "Favorites";
-"profile" = "Profile";
+//Profile
+"sinceAt" = "No app desde";
+"editProfile" = "Editar Perfil";
+"preferences" = "Preferencias";
+"myRecipes" = "Minhas Receitas";
+"changePassword" = "Trocar Senha";
+"exit" = "Sair";
+
+"home" = "Receitas";
+"favorites" = "Favoritos";
+"profile" = "Perfil";
 "search" = "Buscar";
+
+"selectPhoto" = "Escolher foto";
+"fromGallery" = "Abrir câmera";
+"fromCamera" = "Escolher da galeria";
+"cancel" = "Cancelar";
