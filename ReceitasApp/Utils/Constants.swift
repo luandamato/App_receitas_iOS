@@ -29,6 +29,9 @@ enum StringNameConstants: String {
     case recoveryPasswordButton
     case emailSent
     case home
+    case favorites
+    case profile
+    case search
     case createAccount
     case fullName
     case fullNameHint
@@ -52,4 +55,5 @@ class ImageNameConstants {
     static let welcomeLogo = "welcome_logo"
     static let back = "back"
     static let icon = "icon"
+    static let search = "search"
 }

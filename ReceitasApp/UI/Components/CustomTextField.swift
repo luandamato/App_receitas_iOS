@@ -9,9 +9,21 @@
 import Foundation
 import UIKit
 
+protocol SearchDelegate {
+    func searchLocal(value: String)
+    func searchRemote(value: String)
+}
+
 @IBDesignable
 class CustomEditText : UIView, UITextFieldDelegate {
     
+    enum CustomEditTextType {
+        case normal
+        case password
+        case search
+    }
+    private var debounceTimer: Timer?
+    var searchDelegate: SearchDelegate?
     private var editText: UITextField = UITextField() {
         didSet {
             //Default editText
@@ -62,20 +74,21 @@ class CustomEditText : UIView, UITextFieldDelegate {
         }
     }
     
-    @IBInspectable
-    var senha : Bool = false {
+    var type: CustomEditTextType = .normal {
         didSet {
-            if senha{
+            switch type {
+            case .normal:
+                break
+                
+            case .password:
                 self.editText.isSecureTextEntry = true
+                setButtonImage(named: "Show", action: #selector(verCampo))
+                break
                 
-                let button = UIButton(type: .custom)
-                let image = getImageEye()
-                
-                button.setImage(image, for: .normal)
-                button.frame = CGRect(x: self.frame.size.width , y: 5, width: 30, height: 30)
-                button.addTarget(self, action: #selector(verCampo), for: .touchUpInside)
-                self.editText.rightView = button
-                self.editText.rightViewMode = .always
+            case .search:
+                self.editText.returnKeyType = .search
+                setButtonImage(named: "search", action: #selector(search))
+                break
             }
         }
     }
@@ -95,7 +108,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     @IBInspectable
     var autocapitalizationType : UITextAutocapitalizationType = .sentences {
         didSet {
-            if !senha{
+            if type == .normal {
                 self.editText.autocapitalizationType = autocapitalizationType
             }
         }
@@ -136,22 +149,38 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.editText.becomeFirstResponder()
     }
     
-    private func getImageEye(name: String = "Show") -> UIImage? {
+    private func setButtonImage(named: String, action: Selector){
+        let button = UIButton(type: .custom)
+        let image = getImage(name: named)
+        button.setImage(image, for: .normal)
+        button.frame = CGRect(x: self.frame.size.width , y: 5, width: 30, height: 30)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        self.editText.rightView = button
+        self.editText.rightViewMode = .always
+    }
+    
+    private func getImage(name: String) -> UIImage? {
         let image = UIImage(named: name)
         return image?.resize(maxWidthHeight: 30)
     }
     
     @objc private func verCampo(_ sender: UIButton) {
-        
         self.editText.isSecureTextEntry = !self.editText.isSecureTextEntry
-        
         if self.editText.isSecureTextEntry {
-            let image = getImageEye(name: "Show")
+            let image = getImage(name: "Show")
             sender.setImage(image, for: .normal)
         } else {
-            let image = getImageEye(name: "Hide")
+            let image = getImage(name: "Hide")
             sender.setImage(image, for: .normal)
         }
+    }
+    
+    @objc private func search(_ sender: UIButton) {
+        endEditing(true)
+        guard let value = self.editText.text else {
+            return
+        }
+        self.searchDelegate?.searchRemote(value: value)
     }
     
     private func setup() {
@@ -263,9 +292,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
 }
 
 extension CustomEditText{
-    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        endEditing(true)
-    }
     
     func getTexto() -> String{
         return self.editText.text ?? ""
@@ -273,6 +299,36 @@ extension CustomEditText{
     
     func set(texto: String){
         self.editText.text = texto
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if type != .search { return true }
+        
+        // ao digitar procura resultado localmente, se parar de digitar por 2 segundos busca novos resultados na API
+        let currentText = (textField.text ?? "") as NSString
+        let newText = currentText.replacingCharacters(in: range, with: string)
+        self.searchDelegate?.searchLocal(value: newText)
+        
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] _ in
+            guard let value = self?.editText.text else {
+                return
+            }
+            self?.searchDelegate?.searchRemote(value: value)
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        if type != .search { return true }
+        debounceTimer?.invalidate()
+        guard let value = self.editText.text else {
+            return true
+        }
+        self.searchDelegate?.searchRemote(value: value)
+        return true
     }
 }
 

@@ -42,7 +42,7 @@ class LoginVC: BaseViewController {
         let view = CustomEditText(titulo: String.stringFor(text: StringNameConstants.password),
                                   placeholder: String.stringFor(text: StringNameConstants.fillPassword))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.senha = true
+        view.type = .password
         return view
     }()
 

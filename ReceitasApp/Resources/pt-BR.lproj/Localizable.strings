@@ -46,4 +46,7 @@
 "bioHint" = "Escreva um pouco sobre você. (Opcional)";
 "update" = "Atualizar";
 
-"home" = "Início";
+"home" = "Recipes";
+"favorites" = "Favorites";
+"profile" = "Profile";
+"search" = "Buscar";
