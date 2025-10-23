@@ -157,7 +157,7 @@ class ProfileVC: BaseViewController {
     private func setupButtons() {
         let buttons: [(String, String, UIColor?, Selector)] = [
             (String.stringFor(text: .editProfile), "pencil", nil, #selector(editProfile)),
-            (String.stringFor(text: .preferences), "slider.horizontal.3", nil, #selector(openPreferences)),
+//            (String.stringFor(text: .preferences), "slider.horizontal.3", nil, #selector(openPreferences)),
             (String.stringFor(text: .myRecipes), "book", nil, #selector(openMyRecipes)),
             (String.stringFor(text: .changePassword), "key", nil, #selector(changePassword)),
             (String.stringFor(text: .exit), "arrow.right.circle.fill", AppColor.error, #selector(logout))
@@ -222,11 +222,15 @@ class ProfileVC: BaseViewController {
     // MARK: - Actions
     
     @objc private func editProfile() {
-        print("Editar perfil")
+        let vc = AboutUserVC()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func openPreferences() {
-        print("Abrir preferências")
+        let vc = PreferencsVC()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func openMyRecipes() {
