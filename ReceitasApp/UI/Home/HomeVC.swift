@@ -7,9 +7,10 @@
 
 import UIKit
 
-class HomeVC: BaseViewController {
+class HomeVC: UIViewController {
     
     private var recipes: [Recipe] = [
+        Recipe(name: "Tropical Salad", description: "", imageName: "salad"),
         Recipe(name: "Pasta Carbonara", description: "A classic Italian dish made with eggs, cheese, pancetta, and pepper. vamos deixar esse titulo p=maiorr pra ver se quebra as linhas certinho e a celula vai ficar grande iguallll", imageName: "pasta"),
         Recipe(name: "Tropical Salad", description: "", imageName: "salad"),
         Recipe(name: "Chocolate Cake", description: "Rich and moist cake topped with creamy chocolate frosting.", imageName: "cake")
@@ -63,6 +64,7 @@ class HomeVC: BaseViewController {
     
     private lazy var tableView: UITableView = {
         let view = UITableView()
+        view.allowsSelection = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -99,6 +101,7 @@ class HomeVC: BaseViewController {
     }
     
     private func setupLayout() {
+        view.backgroundColor = AppColor.background
         viewHeader.addSubview(icon)
         viewHeader.addSubview(lblTitle)
         viewHeader.addSubview(btnSearch)
@@ -165,8 +168,14 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.configure(with: recipes[indexPath.row])
-        cell.selectionStyle = .none
+        cell.selectionStyle = .default
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = SwiftUiVC(swiftUIView: RefeicaoView(refeicao: recipes[indexPath.row]))
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

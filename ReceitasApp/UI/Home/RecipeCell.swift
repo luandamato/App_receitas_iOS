@@ -15,6 +15,7 @@ class RecipeCell: UITableViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
+        iv.isUserInteractionEnabled = false
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -33,7 +34,7 @@ class RecipeCell: UITableViewCell {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .secondarySystemBackground
+        view.isUserInteractionEnabled = false
         view.layer.cornerRadius = 20
         view.layer.masksToBounds = true
         return view
@@ -84,7 +85,7 @@ class RecipeCell: UITableViewCell {
     }
     
     func configure(with recipe: Recipe) {
-        recipeImageView.image = UIImage(named: recipe.imageName)
+        recipeImageView.image = UIImage(named: recipe.imageName ?? "")
         nameLabel.text = recipe.name
         descriptionLabel.text = recipe.description
     }

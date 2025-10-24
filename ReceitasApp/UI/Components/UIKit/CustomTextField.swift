@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 protocol SearchDelegate {
     func searchLocal(value: String)
@@ -17,6 +18,7 @@ protocol SearchDelegate {
 @IBDesignable
 class CustomEditText : UIView, UITextFieldDelegate {
     
+    private var widthConstraint: NSLayoutConstraint?
     enum CustomEditTextType {
         case normal
         case password
@@ -44,7 +46,10 @@ class CustomEditText : UIView, UITextFieldDelegate {
     let fontSize : CGFloat = 12
     let cornerRadius : CGFloat = 5
     
-    
+    override var intrinsicContentSize: CGSize {
+        // Permite que o SwiftUI defina a largura
+        return CGSize(width: UIView.noIntrinsicMetric, height: altura)
+    }
     
     @IBInspectable
     var titulo : String = "" {
@@ -287,6 +292,17 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.stack.backgroundColor = .clear
         self.viewBorda.backgroundColor = AppColor.background
             
+    }
+    
+    func setWidth(_ width: CGFloat) {
+        if let widthConstraint = widthConstraint {
+            widthConstraint.constant = width
+        } else {
+            widthConstraint = self.widthAnchor.constraint(equalToConstant: width)
+            widthConstraint?.isActive = true
+        }
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
     }
     
 }
@@ -540,5 +556,49 @@ class CustomTextArea: UIView, UITextViewDelegate {
         backgroundColor = .clear
         stack.backgroundColor = .clear
         viewBorda.backgroundColor = AppColor.background
+    }
+}
+
+struct CustomEditTextView: UIViewRepresentable {
+    @Binding var text: String
+    var title: String
+    var placeholder: String
+    var type: CustomEditText.CustomEditTextType
+    var enable: Bool = true
+    var onSearchLocal: ((String) -> Void)? = nil
+    var onSearchRemote: ((String) -> Void)? = nil
+
+    func makeUIView(context: Context) -> CustomEditText {
+        let view = CustomEditText(titulo: title, placeholder: placeholder)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.type = type
+        view.enable = enable
+        view.searchDelegate = context.coordinator
+        view.set(texto: text)
+        return view
+    }
+
+    func updateUIView(_ uiView: CustomEditText, context: Context) {
+        if uiView.getTexto() != text {
+            uiView.set(texto: text)
+        }
+        uiView.enable = enable
+        uiView.type = type
+        DispatchQueue.main.async {
+                if let superview = uiView.superview {
+                    uiView.setWidth(superview.bounds.width)
+                }
+            }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    class Coordinator: NSObject, SearchDelegate {
+        var parent: CustomEditTextView
+        init(parent: CustomEditTextView) { self.parent = parent }
+        func searchLocal(value: String) { parent.onSearchLocal?(value) }
+        func searchRemote(value: String) { parent.onSearchRemote?(value) }
     }
 }
