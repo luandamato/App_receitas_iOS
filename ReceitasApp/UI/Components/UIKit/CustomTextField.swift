@@ -585,10 +585,10 @@ struct CustomEditTextView: UIViewRepresentable {
         uiView.enable = enable
         uiView.type = type
         DispatchQueue.main.async {
-                if let superview = uiView.superview {
-                    uiView.setWidth(superview.bounds.width)
-                }
+            if let superview = uiView.superview {
+                uiView.setWidth(superview.bounds.width)
             }
+        }
     }
 
     func makeCoordinator() -> Coordinator {

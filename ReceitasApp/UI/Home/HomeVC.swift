@@ -10,10 +10,60 @@ import UIKit
 class HomeVC: UIViewController {
     
     private var recipes: [Recipe] = [
-        Recipe(name: "Tropical Salad", description: "", imageName: "salad"),
-        Recipe(name: "Pasta Carbonara", description: "A classic Italian dish made with eggs, cheese, pancetta, and pepper. vamos deixar esse titulo p=maiorr pra ver se quebra as linhas certinho e a celula vai ficar grande iguallll", imageName: "pasta"),
-        Recipe(name: "Tropical Salad", description: "", imageName: "salad"),
-        Recipe(name: "Chocolate Cake", description: "Rich and moist cake topped with creamy chocolate frosting.", imageName: "cake")
+        Recipe(
+            name: "Bolo de Chocolate",
+            description: "Um bolo fofinho e delicioso.",
+            imageName: "cake",
+            owner: "Maria",
+            date: "10/06/2024",
+            ingredients: ["2 xícaras de farinha", "1 xícara de açúcar", "1 xícara de chocolate em pó", "3 ovos", "1 xícara de leite"],
+            preparation: "Misture todos os ingredientes, asse por 40 minutos a 180ºC."
+        ),
+        Recipe(
+            name: "Lasanha de Frango",
+            description: "Lasanha cremosa com molho branco.",
+            imageName: "pasta",
+            owner: "João",
+            date: "05/06/2024",
+            ingredients: ["500g de frango desfiado", "Massa para lasanha", "Molho branco", "Queijo mussarela"],
+            preparation: "Monte as camadas e leve ao forno por 30 minutos."
+        ),
+        Recipe(
+            name: "Salada Caesar",
+            description: "Salada leve e refrescante.",
+            imageName: "salad",
+            owner: "Ana",
+            date: "01/06/2024",
+            ingredients: ["Alface", "Frango grelhado", "Croutons", "Molho Caesar", "Parmesão"],
+            preparation: "Misture todos os ingredientes e sirva gelado."
+        ),
+        Recipe(
+            name: "Risoto de Cogumelos",
+            description: "Risoto cremoso com cogumelos frescos.",
+            imageName: "pasta",
+            owner: "Carlos",
+            date: "12/05/2024",
+            ingredients: ["Arroz arbório", "Cogumelos frescos", "Caldo de legumes", "Parmesão"],
+            preparation: "Cozinhe o arroz com caldo, adicione cogumelos e finalize com parmesão."
+        ),
+        Recipe(
+            name: "Torta de Limão",
+            description: "Torta doce com sabor cítrico.",
+            imageName: "cake",
+            owner: "Fernanda",
+            date: "20/05/2024",
+            ingredients: ["Biscoito maisena", "Leite condensado", "Limão", "Creme de leite"],
+            preparation: "Prepare a base, recheie e leve à geladeira por 2 horas."
+        ),
+        Recipe(
+            name: "Feijoada",
+            description: "Prato típico brasileiro, rico em sabor.",
+            imageName: "pasta",
+            owner: "Pedro",
+            date: "15/06/2024",
+            ingredients: ["Feijão preto", "Carne seca", "Linguiça", "Costelinha de porco"],
+            preparation: "Cozinhe tudo junto até ficar macio. Sirva com arroz e couve."
+        )
     ]
     
     private lazy var viewHeader: UIView = {

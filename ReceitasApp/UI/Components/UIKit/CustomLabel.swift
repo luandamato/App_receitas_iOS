@@ -76,6 +76,7 @@ class CustomLabel : UILabel {
 struct CustomLabelView: UIViewRepresentable {
     var text: String?
     var type: CustomLabel.CustomLabelType
+    var textSize: Float = 15
 
     func makeUIView(context: Context) -> CustomLabel {
         let label = CustomLabel(text: text, type: type)
@@ -87,6 +88,7 @@ struct CustomLabelView: UIViewRepresentable {
 
     func updateUIView(_ uiView: CustomLabel, context: Context) {
         uiView.texto = text ?? ""
+        uiView.fontSize = CGFloat(textSize)
         uiView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 32
     }
 }

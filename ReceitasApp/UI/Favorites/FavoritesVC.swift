@@ -10,7 +10,7 @@ import UIKit
 class FavoritesVC: BaseViewController {
     
     private var recipes: [Recipe] = [
-        Recipe(name: "Chocolate Cake", description: "Rich and moist cake topped with creamy chocolate frosting.", imageName: "cake")
+        Recipe(name: "Chocolate Cake", description: "Rich and moist cake topped with creamy chocolate frosting.", imageName: "cake", ingredients: ["infrediente 1 ","ingredient2"])
     ]
     
     private let lblTitle: CustomLabel = {
