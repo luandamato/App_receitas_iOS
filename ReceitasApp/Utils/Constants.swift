@@ -58,6 +58,10 @@ enum StringNameConstants: String {
     case myRecipes
     case changePassword
     case exit
+    case ingredients
+    case preparation
+    case publishedBy
+    case on
 }
 
 class ImageNameConstants {

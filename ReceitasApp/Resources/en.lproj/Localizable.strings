@@ -54,6 +54,12 @@
 "changePassword" = "Change Password";
 "exit" = "Exit";
 
+//Detail
+"ingredients" = "Ingredients";
+"preparation" = "Prepare mode";
+"publishedBy" = "Published by";
+"on" = "on";
+
 "home" = "Recipes";
 "favorites" = "Favorites";
 "profile" = "Profile";

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 @IBDesignable
 class CustomLabel : UILabel {
@@ -16,11 +17,11 @@ class CustomLabel : UILabel {
         case body
     }
     
-    public init(text: String = "", type: CustomLabelType = .body) {
+    public init(text: String? = "", type: CustomLabelType = .body) {
         self.customType = type
         super.init(frame: .zero)
         self.cor = AppColor.primaryButton
-        self.texto = text
+        self.texto = text ?? ""
         self.fontSize = customType == .title ? 20 : 15
         self.cor = customType == .title ? AppColor.title : AppColor.body
         updateTitulo()
@@ -72,4 +73,22 @@ class CustomLabel : UILabel {
     }
 }
 
+struct CustomLabelView: UIViewRepresentable {
+    var text: String?
+    var type: CustomLabel.CustomLabelType
+    var textSize: Float = 15
 
+    func makeUIView(context: Context) -> CustomLabel {
+        let label = CustomLabel(text: text, type: type)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .left
+        return label
+    }
+
+    func updateUIView(_ uiView: CustomLabel, context: Context) {
+        uiView.texto = text ?? ""
+        uiView.fontSize = CGFloat(textSize)
+        uiView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 32
+    }
+}
