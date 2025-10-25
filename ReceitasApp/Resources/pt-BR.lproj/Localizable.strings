@@ -66,6 +66,6 @@
 "search" = "Buscar";
 
 "selectPhoto" = "Escolher foto";
-"fromGallery" = "Abrir câmera";
-"fromCamera" = "Escolher da galeria";
+"fromGallery" = "Escolher da galeria";
+"fromCamera" = "Abrir câmera";
 "cancel" = "Cancelar";

@@ -16,7 +16,6 @@ struct AddRecipeView: View {
     @State private var ingredients = [""]
     @State private var prepare = ""
     @State private var image: UIImage?
-    @State private var showImagePicker = false
     @State private var isLoading = false
 
     var body: some View {
@@ -26,7 +25,6 @@ struct AddRecipeView: View {
                 // MARK: - Foto
                 RecipePhotoPickerView(
                     image: $image,
-                    showImagePicker: $showImagePicker,
                     existingImageName: existingRecipe?.imageName
                 )
                 
