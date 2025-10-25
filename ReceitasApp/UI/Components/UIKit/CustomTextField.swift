@@ -26,7 +26,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     }
     private var debounceTimer: Timer?
     var searchDelegate: SearchDelegate?
-    private var editText: UITextField = UITextField() {
+    fileprivate var editText: UITextField = UITextField() {
         didSet {
             //Default editText
             self.editText.textColor = AppColor.body
@@ -37,7 +37,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     var stack: UIStackView = UIStackView()
     var viewBorda: UIView = UIView()
     var viewBlock: UIView = UIView()
-    var lbl: UILabel = UILabel()
+    var lbl: CustomLabel = CustomLabel(type: .body)
     var lblErro: UILabel = UILabel()
     var altura: CGFloat = 63
     // Constants
@@ -142,8 +142,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
     
     private func updateTitulo() {
         lbl.text = titulo
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = AppColor.body
     }
 
     private func updatePlaceholder() {
@@ -350,10 +348,12 @@ extension CustomEditText{
 
 @IBDesignable
 class CustomTextArea: UIView, UITextViewDelegate {
+    
+    private var widthConstraint: NSLayoutConstraint?
 
     // MARK: - Subviews
     
-    private lazy var editText: UITextView = {
+    fileprivate lazy var editText: UITextView = {
         let view = UITextView()
         view.textColor = AppColor.body
         view.font = UIFont.systemFont(ofSize: 16)
@@ -366,7 +366,7 @@ class CustomTextArea: UIView, UITextViewDelegate {
     private var stack = UIStackView()
     private var viewBorda = UIView()
     private var viewBlock = UIView()
-    private var lbl = UILabel()
+    private var lbl: CustomLabel = CustomLabel(type: .body)
     private var lblErro = UILabel()
     private var lblContador = UILabel()
 
@@ -397,6 +397,11 @@ class CustomTextArea: UIView, UITextViewDelegate {
     
     @IBInspectable
     var limiteCaracteres: Int = 200 {
+        didSet { updateContador() }
+    }
+    
+    @IBInspectable
+    var exibeLimite: Bool = true {
         didSet { updateContador() }
     }
     
@@ -495,14 +500,13 @@ class CustomTextArea: UIView, UITextViewDelegate {
     
     private func updateTitulo() {
         lbl.text = titulo
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = AppColor.body
     }
     
     private func updateContador() {
         let count = editText.text.count
         lblContador.text = "\(count)/\(limiteCaracteres)"
         lblContador.textColor = count > limiteCaracteres ? AppColor.error : AppColor.body
+        lblContador.isHidden = !exibeLimite
     }
     
     // MARK: - Delegate
@@ -557,6 +561,21 @@ class CustomTextArea: UIView, UITextViewDelegate {
         stack.backgroundColor = .clear
         viewBorda.backgroundColor = AppColor.background
     }
+    
+    func set(texto: String){
+        self.editText.text = texto
+    }
+    
+    func setWidth(_ width: CGFloat) {
+        if let widthConstraint = widthConstraint {
+            widthConstraint.constant = width
+        } else {
+            widthConstraint = self.widthAnchor.constraint(equalToConstant: width)
+            widthConstraint?.isActive = true
+        }
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+    }
 }
 
 struct CustomEditTextView: UIViewRepresentable {
@@ -575,6 +594,7 @@ struct CustomEditTextView: UIViewRepresentable {
         view.enable = enable
         view.searchDelegate = context.coordinator
         view.set(texto: text)
+        view.editText.delegate = context.coordinator
         return view
     }
 
@@ -595,10 +615,57 @@ struct CustomEditTextView: UIViewRepresentable {
         Coordinator(parent: self)
     }
 
-    class Coordinator: NSObject, SearchDelegate {
+    class Coordinator: NSObject, SearchDelegate, UITextFieldDelegate {
         var parent: CustomEditTextView
         init(parent: CustomEditTextView) { self.parent = parent }
         func searchLocal(value: String) { parent.onSearchLocal?(value) }
         func searchRemote(value: String) { parent.onSearchRemote?(value) }
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            parent.text = textField.text ?? ""
+        }
+    }
+}
+
+struct CustomTextAreaView: UIViewRepresentable {
+    @Binding var text: String
+    var title: String
+    var showLimit = true
+    var characterLimit = 200
+
+    func makeUIView(context: Context) -> CustomTextArea {
+        let view = CustomTextArea(titulo: title)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.set(texto: text)
+        view.exibeLimite = showLimit
+        view.limiteCaracteres = characterLimit
+        view.editText.delegate = context.coordinator
+        return view
+    }
+
+    func updateUIView(_ uiView: CustomTextArea, context: Context) {
+        if uiView.editText.text != text {
+            uiView.set(texto: text)
+        }
+        DispatchQueue.main.async {
+            if let superview = uiView.superview {
+                uiView.setWidth(superview.bounds.width)
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    // ✅ Coordinator responsável por sincronizar o texto UIKit → SwiftUI
+    class Coordinator: NSObject, UITextViewDelegate {
+        var parent: CustomTextAreaView
+        init(parent: CustomTextAreaView) {
+            self.parent = parent
+        }
+
+        func textViewDidChange(_ textView: UITextView) {
+            parent.text = textView.text
+        }
     }
 }

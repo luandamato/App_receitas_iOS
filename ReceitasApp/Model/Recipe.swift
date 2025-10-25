@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Recipe {
+struct Recipe: Codable {
+    var id: String = ""
     var name: String
     var description: String?
     var imageName: String?
@@ -16,7 +17,8 @@ struct Recipe {
     var ingredients: [String]? = []
     var preparation: String? = ""
     
-    init(name: String, description: String? = nil, imageName: String? = nil, owner: String? = nil, date: String? = nil, ingredients: [String]? = nil, preparation: String? = nil) {
+    init(id: String, name: String, description: String? = nil, imageName: String? = nil, owner: String? = nil, date: String? = nil, ingredients: [String]? = nil, preparation: String? = nil) {
+        self.id = id
         self.name = name
         self.description = description
         self.imageName = imageName

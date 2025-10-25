@@ -11,6 +11,7 @@ class HomeVC: UIViewController {
     
     private var recipes: [Recipe] = [
         Recipe(
+            id: "",
             name: "Bolo de Chocolate",
             description: "Um bolo fofinho e delicioso.",
             imageName: "cake",
@@ -20,6 +21,7 @@ class HomeVC: UIViewController {
             preparation: "Misture todos os ingredientes, asse por 40 minutos a 180ºC."
         ),
         Recipe(
+            id: "",
             name: "Lasanha de Frango",
             description: "Lasanha cremosa com molho branco.",
             imageName: "pasta",
@@ -29,6 +31,7 @@ class HomeVC: UIViewController {
             preparation: "Monte as camadas e leve ao forno por 30 minutos."
         ),
         Recipe(
+            id: "",
             name: "Salada Caesar",
             description: "Salada leve e refrescante.",
             imageName: "salad",
@@ -38,6 +41,7 @@ class HomeVC: UIViewController {
             preparation: "Misture todos os ingredientes e sirva gelado."
         ),
         Recipe(
+            id: "",
             name: "Risoto de Cogumelos",
             description: "Risoto cremoso com cogumelos frescos.",
             imageName: "pasta",
@@ -47,6 +51,7 @@ class HomeVC: UIViewController {
             preparation: "Cozinhe o arroz com caldo, adicione cogumelos e finalize com parmesão."
         ),
         Recipe(
+            id: "",
             name: "Torta de Limão",
             description: "Torta doce com sabor cítrico.",
             imageName: "cake",
@@ -56,6 +61,7 @@ class HomeVC: UIViewController {
             preparation: "Prepare a base, recheie e leve à geladeira por 2 horas."
         ),
         Recipe(
+            id: "",
             name: "Feijoada",
             description: "Prato típico brasileiro, rico em sabor.",
             imageName: "pasta",
@@ -202,7 +208,9 @@ class HomeVC: UIViewController {
     }
     
     @objc private func addButtonTapped() {
-        
+        let vc = SwiftUiVC(swiftUIView: AddRecipeView())
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }
