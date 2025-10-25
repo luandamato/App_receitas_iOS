@@ -60,11 +60,22 @@
 "publishedBy" = "Published by";
 "on" = "on";
 
+//addRecepe
+"ingredientHint" = "Ex: 2 cups of flour";
+"addIngredient" = "Add ingredient";
+"recipeName" = "Recipe name";
+"recipeNameHint" = "Chocolate cake";
+"description" = "Description";
+"prepareMode" = "Prepare mode";
+"saveRecipe" = "Save Recipe";
+"updateRecipe" = "Update Recipe";
+
 "home" = "Recipes";
 "favorites" = "Favorites";
 "profile" = "Profile";
 "search" = "Search";
 
+"addPhoto" = "Add photo";
 "selectPhoto" = "Select Photo";
 "fromGallery" = "Choose from Gallery";
 "fromCamera" = "Take Photo";

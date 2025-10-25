@@ -31,8 +31,8 @@ struct AddRecipeView: View {
                 // MARK: - Título
                 CustomEditTextView(
                     text: $name,
-                    title: "Nome da receita",
-                    placeholder: "Bolo de chocolate",
+                    title: String.stringFor(text: .recipeName),
+                    placeholder: String.stringFor(text: .recipeNameHint),
                     type: .normal
                 )
                 .frame(minHeight: 80)
@@ -40,7 +40,7 @@ struct AddRecipeView: View {
                 // MARK: - Descrição
                 CustomTextAreaView(
                     text: $description,
-                    title: "Descrição",
+                    title: String.stringFor(text: .description),
                     characterLimit: 250
                 )
                 .frame(minHeight: 180)
@@ -51,14 +51,16 @@ struct AddRecipeView: View {
                 // MARK: - modo de preparo
                 CustomTextAreaView(
                     text: $prepare,
-                    title: "Modo de preparo",
+                    title: String.stringFor(text: .prepareMode),
                     showLimit: false
                 )
                 .frame(minHeight: 180)
 
                 // MARK: - Salvar Receita
                 
-                CustomButtonView(text: existingRecipe == nil ? "Salvar Receita" : "Atualizar Receita",
+                CustomButtonView(text: existingRecipe == nil ?
+                                 String.stringFor(text: .saveRecipe) :
+                                 String.stringFor(text: .updateRecipe),
                                  onTap: saveRecipe,
                                  isLoading: $isLoading)
             }
@@ -68,7 +70,7 @@ struct AddRecipeView: View {
             if let recipe = existingRecipe {
                 populateFields(with: recipe)
             }
-        }
+        }.background(AppColorSUI.background)
     }
 
     // MARK: - Funções auxiliares

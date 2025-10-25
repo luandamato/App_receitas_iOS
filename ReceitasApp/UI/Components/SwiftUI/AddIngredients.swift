@@ -12,13 +12,13 @@ struct AddIngredientsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            CustomLabelView(text: "Ingredientes", type: .body)
+            CustomLabelView(text: String.stringFor(text: .ingredients), type: .body)
                 .font(.headline)
                 .padding(.bottom, 4)
 
             ForEach(ingredients.indices, id: \.self) { idx in
                 HStack {
-                    TextField("Ex: 2 xícaras de farinha", text: $ingredients[idx])
+                    TextField(String.stringFor(text: .ingredientHint), text: $ingredients[idx])
                         .padding()
                         .background(AppColorSUI.background)
                         .overlay(
@@ -39,7 +39,7 @@ struct AddIngredientsView: View {
                 HStack {
                     Image(systemName: "plus.circle")
                         .foregroundColor(AppColorSUI.primaryButton)
-                    Text("Adicionar Ingrediente")
+                    Text(String.stringFor(text: .addIngredient))
                         .fontWeight(.semibold)
                         .foregroundColor(AppColorSUI.primaryButton)
                 }

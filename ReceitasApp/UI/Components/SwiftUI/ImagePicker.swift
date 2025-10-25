@@ -4,6 +4,7 @@
 //
 //  Created by Luan Damato on 24/10/25.
 
+import UIKit
 import SwiftUI
 import PhotosUI
 
@@ -40,7 +41,7 @@ struct RecipePhotoPickerView: View {
                         Image(systemName: "camera")
                             .font(.system(size: 32))
                             .foregroundColor(AppColorSUI.primaryButton)
-                        Text("Adicionar Foto")
+                        Text(String.stringFor(text: .addPhoto))
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
                     }
@@ -48,10 +49,10 @@ struct RecipePhotoPickerView: View {
             }
         }
         // 🔽 Ação ao tocar
-        .confirmationDialog("Selecionar foto", isPresented: $showSourceActionSheet) {
-            Button("Tirar foto") { showCameraPicker = true }
-            Button("Escolher da galeria") { showGalleryPicker = true }
-            Button("Cancelar", role: .cancel) {}
+        .confirmationDialog(String.stringFor(text: .selectPhoto), isPresented: $showSourceActionSheet) {
+            Button(String.stringFor(text: .fromCamera)) { showCameraPicker = true }
+            Button(String.stringFor(text: .fromGallery)) { showGalleryPicker = true }
+            Button(String.stringFor(text: .cancel), role: .cancel) {}
         }
         // 📷 Abre a câmera
         .sheet(isPresented: $showCameraPicker) {

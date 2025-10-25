@@ -60,11 +60,22 @@
 "publishedBy" = "Publicado por";
 "on" = "em";
 
+//addRecepe
+"ingredientHint" = "Ex: 2 xícaras de farinha";
+"addIngredient" = "Adicionar Ingrediente";
+"recipeName" = "Nome da receita";
+"recipeNameHint" = "Bolo de chocolate";
+"description" = "Descrição";
+"prepareMode" = "Modo de preparo";
+"saveRecipe" = "Salvar Receita";
+"updateRecipe" = "Atualizar Receita";
+
 "home" = "Receitas";
 "favorites" = "Favoritos";
 "profile" = "Perfil";
 "search" = "Buscar";
 
+"addPhoto" = "Add photo";
 "selectPhoto" = "Escolher foto";
 "fromGallery" = "Escolher da galeria";
 "fromCamera" = "Abrir câmera";
