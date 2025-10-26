@@ -52,12 +52,25 @@ enum StringNameConstants: String {
     case fromGallery
     case fromCamera
     case cancel
+    case addPhoto
     case sinceAt
     case editProfile
     case preferences
     case myRecipes
     case changePassword
     case exit
+    case ingredients
+    case preparation
+    case publishedBy
+    case on
+    case ingredientHint
+    case addIngredient
+    case recipeName
+    case recipeNameHint
+    case description
+    case prepareMode
+    case saveRecipe
+    case updateRecipe
 }
 
 class ImageNameConstants {

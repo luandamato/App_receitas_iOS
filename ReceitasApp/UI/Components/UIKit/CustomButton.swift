@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 @IBDesignable
 class CustomButton : UIButton {
@@ -38,6 +39,14 @@ class CustomButton : UIButton {
 
     @objc private func handleTap() {
         onTap?()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Reposiciona o indicador se já existir
+        if let indicator = activityIndicator {
+            indicator.center = CGPoint(x: bounds.midX, y: bounds.midY)
+        }
     }
     
     // Constants
@@ -170,11 +179,14 @@ class CustomButton : UIButton {
                 indicator.translatesAutoresizingMaskIntoConstraints = false
                 addSubview(indicator)
                 NSLayoutConstraint.activate([
-                    indicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-                    indicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+                    indicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                    indicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
                 ])
                 activityIndicator = indicator
             }
+            layoutIfNeeded()
+            bringSubviewToFront(activityIndicator!)
+
             setTitleColor(.clear, for: .normal)
             titleLabel?.layer.opacity = 0
             isEnabled = false
@@ -185,5 +197,24 @@ class CustomButton : UIButton {
             isEnabled = true
             activityIndicator?.stopAnimating()
         }
+    }
+}
+
+struct CustomButtonView: UIViewRepresentable {
+    var text: String
+    var type: CustomButton.CustomButtonType = .primary
+    var onTap: (() -> Void)? = nil
+    @Binding var isLoading: Bool
+    
+    func makeUIView(context: Context) -> CustomButton {
+        let button = CustomButton(type: type, text: text, onTap: onTap)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
+    func updateUIView(_ uiView: CustomButton, context: Context) {
+        uiView.texto = text
+        uiView.habilitado = true
+        uiView.setLoading(visible: isLoading)
     }
 }

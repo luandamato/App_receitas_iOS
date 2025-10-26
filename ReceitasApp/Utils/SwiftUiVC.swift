@@ -8,12 +8,14 @@
 import UIKit
 import SwiftUI
 
-class SwiftUiVC<Content: View>: UIViewController {
+class SwiftUiVC<Content: View>: BaseViewController {
     
     private let swiftUIView: Content
+    private var screenTitle: String = ""
     
-    init(swiftUIView: Content) {
+    init(swiftUIView: Content, title: String = "") {
         self.swiftUIView = swiftUIView
+        self.screenTitle = title
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -23,15 +25,23 @@ class SwiftUiVC<Content: View>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        addBackButton(title: screenTitle)
         // Cria o UIHostingController que embala a view SwiftUI
         let hostingController = UIHostingController(rootView: swiftUIView)
         
         // Adiciona como filho do VC UIKit
         addChild(hostingController)
-        hostingController.view.frame = view.bounds
-        hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(hostingController.view)
+
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
+            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
         hostingController.didMove(toParent: self)
     }
 }

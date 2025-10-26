@@ -67,7 +67,7 @@ class UserPhotoPickerView: UIView {
     }
     
     @objc private func selectImageTapped() {
-            guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return }
 
         let alert = UIAlertController(title: String.stringFor(text: .selectPhoto), message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: String.stringFor(text: .fromCamera), style: .default, handler: { _ in
@@ -78,17 +78,17 @@ class UserPhotoPickerView: UIView {
             }))
         alert.addAction(UIAlertAction(title: String.stringFor(text: .cancel), style: .cancel))
 
-            topController.present(alert, animated: true)
-        }
+        topController.present(alert, animated: true)
+    }
 
-        private func presentImagePicker(source: UIImagePickerController.SourceType, from controller: UIViewController) {
-            guard UIImagePickerController.isSourceTypeAvailable(source) else { return }
-            let picker = UIImagePickerController()
-            picker.sourceType = source
-            picker.delegate = self
-            picker.allowsEditing = true
-            controller.present(picker, animated: true)
-        }
+    private func presentImagePicker(source: UIImagePickerController.SourceType, from controller: UIViewController) {
+        guard UIImagePickerController.isSourceTypeAvailable(source) else { return }
+        let picker = UIImagePickerController()
+        picker.sourceType = source
+        picker.delegate = self
+        picker.allowsEditing = true
+        controller.present(picker, animated: true)
+    }
 }
 
 extension UserPhotoPickerView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

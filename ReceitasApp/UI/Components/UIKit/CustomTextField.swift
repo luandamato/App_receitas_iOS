@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 protocol SearchDelegate {
     func searchLocal(value: String)
@@ -17,6 +18,7 @@ protocol SearchDelegate {
 @IBDesignable
 class CustomEditText : UIView, UITextFieldDelegate {
     
+    private var widthConstraint: NSLayoutConstraint?
     enum CustomEditTextType {
         case normal
         case password
@@ -24,7 +26,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     }
     private var debounceTimer: Timer?
     var searchDelegate: SearchDelegate?
-    private var editText: UITextField = UITextField() {
+    fileprivate var editText: UITextField = UITextField() {
         didSet {
             //Default editText
             self.editText.textColor = AppColor.body
@@ -35,7 +37,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     var stack: UIStackView = UIStackView()
     var viewBorda: UIView = UIView()
     var viewBlock: UIView = UIView()
-    var lbl: UILabel = UILabel()
+    var lbl: CustomLabel = CustomLabel(type: .body)
     var lblErro: UILabel = UILabel()
     var altura: CGFloat = 63
     // Constants
@@ -44,7 +46,10 @@ class CustomEditText : UIView, UITextFieldDelegate {
     let fontSize : CGFloat = 12
     let cornerRadius : CGFloat = 5
     
-    
+    override var intrinsicContentSize: CGSize {
+        // Permite que o SwiftUI defina a largura
+        return CGSize(width: UIView.noIntrinsicMetric, height: altura)
+    }
     
     @IBInspectable
     var titulo : String = "" {
@@ -137,8 +142,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
     
     private func updateTitulo() {
         lbl.text = titulo
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = AppColor.body
     }
 
     private func updatePlaceholder() {
@@ -289,6 +292,17 @@ class CustomEditText : UIView, UITextFieldDelegate {
             
     }
     
+    func setWidth(_ width: CGFloat) {
+        if let widthConstraint = widthConstraint {
+            widthConstraint.constant = width
+        } else {
+            widthConstraint = self.widthAnchor.constraint(equalToConstant: width)
+            widthConstraint?.isActive = true
+        }
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+    }
+    
 }
 
 extension CustomEditText{
@@ -332,213 +346,51 @@ extension CustomEditText{
     }
 }
 
-@IBDesignable
-class CustomTextArea: UIView, UITextViewDelegate {
+struct CustomEditTextView: UIViewRepresentable {
+    @Binding var text: String
+    var title: String
+    var placeholder: String
+    var type: CustomEditText.CustomEditTextType
+    var enable: Bool = true
+    var onSearchLocal: ((String) -> Void)? = nil
+    var onSearchRemote: ((String) -> Void)? = nil
 
-    // MARK: - Subviews
-    
-    private lazy var editText: UITextView = {
-        let view = UITextView()
-        view.textColor = AppColor.body
-        view.font = UIFont.systemFont(ofSize: 16)
-        view.delegate = self
-        view.isScrollEnabled = true
-        view.backgroundColor = .clear
+    func makeUIView(context: Context) -> CustomEditText {
+        let view = CustomEditText(titulo: title, placeholder: placeholder)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.type = type
+        view.enable = enable
+        view.searchDelegate = context.coordinator
+        view.set(texto: text)
+        view.editText.delegate = context.coordinator
         return view
-    }()
-    
-    private var stack = UIStackView()
-    private var viewBorda = UIView()
-    private var viewBlock = UIView()
-    private var lbl = UILabel()
-    private var lblErro = UILabel()
-    private var lblContador = UILabel()
+    }
 
-    private var alturaConstraint: NSLayoutConstraint?
-    
-    // MARK: - Constants
-    
-    private let borderWidth: CGFloat = 1
-    private let fontSize: CGFloat = 12
-    private let cornerRadius: CGFloat = 5
-    
-    // MARK: - Inspectables
-    
-    @IBInspectable
-    var titulo: String = "" {
-        didSet { updateTitulo() }
+    func updateUIView(_ uiView: CustomEditText, context: Context) {
+        if uiView.getTexto() != text {
+            uiView.set(texto: text)
+        }
+        uiView.enable = enable
+        uiView.type = type
+        DispatchQueue.main.async {
+            if let superview = uiView.superview {
+                uiView.setWidth(superview.bounds.width)
+            }
+        }
     }
-    
-    @IBInspectable
-    private var texto: String = "" {
-        didSet { editText.text = texto }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
     }
-    
-    @IBInspectable
-    var arredondado: Bool = true {
-        didSet { refreshCorner() }
-    }
-    
-    @IBInspectable
-    var limiteCaracteres: Int = 200 {
-        didSet { updateContador() }
-    }
-    
-    // MARK: - Init
-    
-    public init(titulo: String = "") {
-        super.init(frame: .zero)
-        setup()
-        self.titulo = titulo
-        updateTitulo()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-    
-    // MARK: - Setup
-    
-    private func setup() {
-        setLblColor()
-        setBorderColor()
-        setBackgroundColor()
-        refreshCorner()
-        
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.checkAction))
-        addGestureRecognizer(gesture)
-        
-        viewBorda.layer.borderColor = AppColor.divider.cgColor
-        viewBorda.layer.borderWidth = 1
-        
-        lblErro.numberOfLines = 0
-        lblErro.font = UIFont.systemFont(ofSize: 12)
-        lbl.numberOfLines = 0
-        lblContador.font = UIFont.systemFont(ofSize: 12)
-        lblContador.textColor = AppColor.body
-        lblContador.textAlignment = .right
-        
-        // Stack principal
-        stack.alignment = .fill
-        stack.distribution = .equalSpacing
-        stack.axis = .vertical
-        stack.spacing = 8
-        
-        viewBorda.addSubview(viewBlock)
-        viewBorda.addSubview(editText)
-        
-        // Constraints da área de texto
-        editText.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            editText.leadingAnchor.constraint(equalTo: viewBorda.leadingAnchor, constant: 15),
-            editText.trailingAnchor.constraint(equalTo: viewBorda.trailingAnchor, constant: -15),
-            editText.topAnchor.constraint(equalTo: viewBorda.topAnchor, constant: 15),
-            editText.bottomAnchor.constraint(equalTo: viewBorda.bottomAnchor, constant: -15)
-        ])
-        
-        // View de bloqueio
-        viewBlock.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            viewBlock.leadingAnchor.constraint(equalTo: viewBorda.leadingAnchor),
-            viewBlock.trailingAnchor.constraint(equalTo: viewBorda.trailingAnchor),
-            viewBlock.topAnchor.constraint(equalTo: viewBorda.topAnchor),
-            viewBlock.bottomAnchor.constraint(equalTo: viewBorda.bottomAnchor)
-        ])
-        viewBlock.isHidden = true
-        viewBlock.backgroundColor = AppColor.divider.withAlphaComponent(0.7)
-        
-        // Define altura fixa (5 linhas)
-        let lineHeight: CGFloat = editText.font?.lineHeight ?? 20
-        let totalHeight = lineHeight * 5 + 30 // padding 15 em cima e 15 embaixo
-        alturaConstraint = viewBorda.heightAnchor.constraint(equalToConstant: totalHeight)
-        alturaConstraint?.isActive = true
-        
-        // Montagem da stack
-        stack.addArrangedSubview(lbl)
-        stack.addArrangedSubview(viewBorda)
-        stack.addArrangedSubview(lblContador)
-        stack.addArrangedSubview(lblErro)
-        
-        addSubview(stack)
-        
-        // Constraints da stack
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stack.topAnchor.constraint(equalTo: topAnchor),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
-        lblErro.isHidden = true
-        updateContador()
-    }
-    
-    // MARK: - Updates
-    
-    private func updateTitulo() {
-        lbl.text = titulo
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = AppColor.body
-    }
-    
-    private func updateContador() {
-        let count = editText.text.count
-        lblContador.text = "\(count)/\(limiteCaracteres)"
-        lblContador.textColor = count > limiteCaracteres ? AppColor.error : AppColor.body
-    }
-    
-    // MARK: - Delegate
-    
-    func textViewDidChange(_ textView: UITextView) {
-        updateContador()
-    }
-    
-    // MARK: - Actions
-    
-    @objc private func checkAction(sender: UITapGestureRecognizer) {
-        editText.becomeFirstResponder()
-    }
-    
-    // MARK: - Visual helpers
-    
-    public func setErro(erro: String) {
-        lblErro.isHidden = erro.isEmpty
-        lblErro.text = erro
-        lblErro.textColor = AppColor.error
-        viewBorda.layer.borderColor = AppColor.error.cgColor
-        viewBorda.layer.borderWidth = 1
-    }
-    
-    public func setOK() {
-        lblErro.isHidden = true
-        viewBorda.layer.borderColor = AppColor.divider.cgColor
-        viewBorda.layer.borderWidth = 1
-        setLblColor()
-        setBorderColor()
-        refreshCorner()
-    }
-    
-    private func refreshCorner() {
-        let radius = arredondado ? cornerRadius : 0
-        viewBorda.layer.cornerRadius = radius
-        viewBlock.layer.cornerRadius = radius
-    }
-    
-    private func setLblColor() {
-        lbl.textColor = AppColor.title
-        editText.textColor = AppColor.title
-        editText.font = UIFont.systemFont(ofSize: 16)
-    }
-    
-    private func setBorderColor() {
-        viewBorda.layer.borderColor = UIColor.clear.cgColor
-    }
-    
-    private func setBackgroundColor() {
-        backgroundColor = .clear
-        stack.backgroundColor = .clear
-        viewBorda.backgroundColor = AppColor.background
+
+    class Coordinator: NSObject, SearchDelegate, UITextFieldDelegate {
+        var parent: CustomEditTextView
+        init(parent: CustomEditTextView) { self.parent = parent }
+        func searchLocal(value: String) { parent.onSearchLocal?(value) }
+        func searchRemote(value: String) { parent.onSearchRemote?(value) }
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            parent.text = textField.text ?? ""
+        }
     }
 }
+
