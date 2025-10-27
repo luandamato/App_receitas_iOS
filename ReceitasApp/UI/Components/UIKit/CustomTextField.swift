@@ -188,7 +188,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
     
     private func setup() {
         setLblColor()
-        setBorderColor()
         setBackgroundColor()
         refreshCorner()
         
@@ -246,9 +245,13 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.lblErro.isHidden = true
     }
     
-    public func setErro(erro: String){
-        lblErro.isHidden = erro.isEmpty
-        lblErro.text = erro
+    public func setError(_ error: String?){
+        guard let error else {
+            setOK()
+            return
+        }
+        lblErro.isHidden = error.isEmpty
+        lblErro.text = error
         self.lblErro.textColor = AppColor.error
         self.viewBorda.layer.borderColor = AppColor.error.cgColor
         self.viewBorda.layer.borderWidth = 1
@@ -259,7 +262,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.viewBorda.layer.borderColor = AppColor.divider.cgColor
         self.viewBorda.layer.borderWidth = 1
         setLblColor()
-        setBorderColor()
         refreshCorner()
     }
     
@@ -279,10 +281,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.lbl.textColor = AppColor.title
         self.editText.textColor = AppColor.title
         self.editText.font = UIFont.systemFont(ofSize: 16)
-    }
-    
-    private func setBorderColor() {
-        self.viewBorda.layer.borderColor = UIColor.clear.cgColor
     }
     
     private func setBackgroundColor() {

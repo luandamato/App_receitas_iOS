@@ -6,9 +6,16 @@
 //
 import UIKit
 
+protocol LoginControllerProtocol: AnyObject {
+    func gotoHome()
+    func updateErros()
+    func setLoading(visible: Bool)
+}
+
 class LoginVC: BaseViewController {
 
     let cameFromRegister: Bool
+    var viewModel: LoginViewModelProtocol
     // MARK: - Subviews
 
     private lazy var scrollView: UIScrollView = {
@@ -97,13 +104,16 @@ class LoginVC: BaseViewController {
     }()
     
     // MARK: - Initializer
-    init(cameFromRegister: Bool = false) {
+    init(cameFromRegister: Bool = false, viewModel: LoginViewModelProtocol = LoginViewModel()) {
         self.cameFromRegister = cameFromRegister
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.controller = self
     }
 
     required init?(coder: NSCoder) {
         self.cameFromRegister = true
+        self.viewModel = LoginViewModel()
         super.init(coder: coder)
     }
 
@@ -178,9 +188,11 @@ class LoginVC: BaseViewController {
     // MARK: - Actions
 
     private func onLoginClick() {
-        let home = MainTabBarController()
-        home.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(home, animated: false)
+        view.endEditing(true)
+        let email = txtEmail.getTexto()
+        let password = txtPassword.getTexto()
+
+        viewModel.login(email: email, password: password)
     }
 
     @objc private func onRegisterClcik() {
@@ -194,5 +206,23 @@ class LoginVC: BaseViewController {
     @objc private func onForgotPasswordClick() {
         let vc = ForgotPasswordVC(email: txtEmail.getTexto())
         self.navigationController?.pushViewController(vc, animated:true)
+    }
+}
+
+extension LoginVC: LoginControllerProtocol {
+    func gotoHome() {
+        let home = MainTabBarController()
+        home.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(home, animated: false)
+    }
+
+    func updateErros() {
+        txtEmail.setError(viewModel.emailError)
+        txtPassword.setError(viewModel.passwordError)
+        showToast(message: viewModel.genericError)
+    }
+
+    func setLoading(visible: Bool) {
+        loginButton.setLoading(visible: visible)
     }
 }
