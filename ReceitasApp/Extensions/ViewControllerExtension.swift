@@ -33,8 +33,8 @@ extension UIViewController {
         )
         
         window.addSubview(toastLabel)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            UIView.animate(withDuration: 3.0, delay: 0.1, options: .curveEaseOut, animations: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
                 toastLabel.alpha = 0.0
             }, completion: {(isCompleted) in
                 toastLabel.removeFromSuperview()
