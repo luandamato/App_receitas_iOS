@@ -36,6 +36,11 @@
 "confirmPassword" = "Confirm your password";
 "register" = "Register";
 "alredyRegistered" = "Already have an account? ";
+"fillFullName" = "Please enter your full name";
+"invalidEmail" = "Invalid email";
+"invalidBirthdate" = "Invalid birthdate";
+"passwordMinLength" = "Password must be at least 4 characters long";
+"passwordsMustMatch" = "Passwords must match";
 
 //AboutUser
 "configureProfile" = "Configure your profile";
@@ -45,6 +50,10 @@
 "bio" = "Bio";
 "bioHint" = "Write a little about you. (Opcional)";
 "update" = "Update";
+"tooShortBio" = "Your bio must be longer";
+"tooLongBio" = "Your bio must be shorter";
+"imageError" = "Error on image loading";
+"imageTooLarge" = "The chosed image is too large";
 
 //Profile
 "sinceAt" = "Member since";
@@ -80,3 +89,5 @@
 "fromGallery" = "Choose from Gallery";
 "fromCamera" = "Take Photo";
 "cancel" = "Cancel";
+"requiredField" = "Required field";
+"networkError" = "Falha na conexão, tente novamente mais tarde";

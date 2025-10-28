@@ -184,13 +184,17 @@ class CustomTextArea: UIView, UITextViewDelegate {
     }
     
     // MARK: - Visual helpers
-    
-    public func setErro(erro: String) {
-        lblErro.isHidden = erro.isEmpty
-        lblErro.text = erro
-        lblErro.textColor = AppColor.error
-        viewBorda.layer.borderColor = AppColor.error.cgColor
-        viewBorda.layer.borderWidth = 1
+
+    public func setError(_ error: String?){
+        guard let error else {
+            setOK()
+            return
+        }
+        lblErro.isHidden = error.isEmpty
+        lblErro.text = error
+        self.lblErro.textColor = AppColor.error
+        self.viewBorda.layer.borderColor = AppColor.error.cgColor
+        self.viewBorda.layer.borderWidth = 1
     }
     
     public func setOK() {
@@ -226,6 +230,10 @@ class CustomTextArea: UIView, UITextViewDelegate {
     
     func set(texto: String){
         self.editText.text = texto
+    }
+    
+    func getTexto() -> String{
+        return editText.text ?? ""
     }
     
     func setWidth(_ width: CGFloat) {

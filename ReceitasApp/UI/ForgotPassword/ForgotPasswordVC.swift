@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol ForgotPasswordControllerProtocol: AnyObject {
+    func backToLogin()
+    func updateErros()
+}
+
 class ForgotPasswordVC: BaseViewController {
+    
+    var viewModel: ForgotPasswordViewModelProtocol
     
     // MARK: - Subviews\
     private lazy var lblTitle: CustomLabel = {
@@ -39,12 +46,15 @@ class ForgotPasswordVC: BaseViewController {
     }()
     
     // MARK: - Initializer
-    init(email: String) {
+    init(email: String, viewModel: ForgotPasswordViewModelProtocol = ForgotPasswordViewModel()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.controller = self
         self.txtEmail.set(texto: email)
     }
 
     required init?(coder: NSCoder) {
+        self.viewModel = ForgotPasswordViewModel()
         super.init(coder: coder)
     }
     
@@ -85,7 +95,18 @@ class ForgotPasswordVC: BaseViewController {
     }
     
     private func onSendEmailClick() {
-        showToast(message: String.stringFor(text: .emailSent)) 
+        viewModel.sendEmail(email: txtEmail.getTexto())
+    }
+}
+
+extension ForgotPasswordVC: ForgotPasswordControllerProtocol {
+    func backToLogin() {
+        showToast(message: String.stringFor(text: .emailSent))
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func updateErros() {
+        txtEmail.setError(viewModel.emailError)
+        showToast(message: viewModel.genericError)
     }
 }

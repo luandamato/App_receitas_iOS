@@ -71,6 +71,17 @@ enum StringNameConstants: String {
     case prepareMode
     case saveRecipe
     case updateRecipe
+    case requiredField
+    case fillFullName
+    case invalidEmail
+    case invalidBirthdate
+    case passwordMinLength
+    case passwordsMustMatch
+    case networkError
+    case tooShortBio
+    case tooLongBio
+    case imageError
+    case imageTooLarge
 }
 
 class ImageNameConstants {
