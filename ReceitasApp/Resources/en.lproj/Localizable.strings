@@ -50,6 +50,10 @@
 "bio" = "Bio";
 "bioHint" = "Write a little about you. (Opcional)";
 "update" = "Update";
+"tooShortBio" = "Your bio must be longer";
+"tooLongBio" = "Your bio must be shorter";
+"imageError" = "Error on image loading";
+"imageTooLarge" = "The chosed image is too large";
 
 //Profile
 "sinceAt" = "Member since";

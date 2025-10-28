@@ -6,9 +6,16 @@
 //
 import UIKit
 
+protocol AboutUserControllerProtocol: AnyObject {
+    func gotoHome()
+    func updateErros()
+    func setLoading(visible: Bool)
+}
 class AboutUserVC: BaseViewController {
 
     let cameFromRegister: Bool
+    var viewModel: AboutUserViewModelProtocol
+    var userImage: UIImage?
     // MARK: - Subviews
 
     private lazy var scrollView: UIScrollView = {
@@ -66,13 +73,16 @@ class AboutUserVC: BaseViewController {
     }()
     
     // MARK: - Initializer
-    init(cameFromRegister: Bool = false) {
+    init(cameFromRegister: Bool = false, viewModel: AboutUserViewModelProtocol = AboutUserViewModel()) {
         self.cameFromRegister = cameFromRegister
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.controller = self
     }
 
     required init?(coder: NSCoder) {
         self.cameFromRegister = true
+        self.viewModel = AboutUserViewModel()
         super.init(coder: coder)
     }
 
@@ -145,7 +155,9 @@ class AboutUserVC: BaseViewController {
     // MARK: - Actions
 
     private func onUpdateClick() {
-        close()
+        viewModel.update(username: txtUserName.getTexto(),
+                         bio: txtBio.getTexto(),
+                         photo: self.userImage)
     }
     
     @objc private func close() {
@@ -162,6 +174,22 @@ class AboutUserVC: BaseViewController {
 
 extension AboutUserVC: UserPhotoPickerViewDelegate {
     func userPhotoPickerView(_ picker: UserPhotoPickerView, didSelect image: UIImage) {
-        
+        self.userImage = image
+    }
+}
+
+extension AboutUserVC: AboutUserControllerProtocol {
+    func gotoHome() {
+        close()
+    }
+    
+    func updateErros() {
+        txtBio.setError(viewModel.bioError)
+        txtUserName.setError(viewModel.usernameError)
+        showToast(message: viewModel.genericError)
+    }
+    
+    func setLoading(visible: Bool) {
+        btnUpdate.setLoading(visible: visible)
     }
 }

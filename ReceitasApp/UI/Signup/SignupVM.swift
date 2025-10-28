@@ -37,6 +37,7 @@ class RegisterViewModel: RegisterViewModelProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             self.controller?.setLoading(visible: false)
             self.controller?.updateErros()
+            self.controller?.gotoUserInfo()
          }
     }
     
@@ -80,7 +81,7 @@ class RegisterViewModel: RegisterViewModelProtocol {
         }
         
         controller?.updateErros()
-        return emailError == nil && passwordError == nil
+        return [emailError, nameError, birthdateError, passwordError, confirmPasswordError].allSatisfy { $0 == nil }
     }
 
     private func isValidEmail(_ email: String) -> Bool {

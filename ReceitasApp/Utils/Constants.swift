@@ -78,6 +78,10 @@ enum StringNameConstants: String {
     case passwordMinLength
     case passwordsMustMatch
     case networkError
+    case tooShortBio
+    case tooLongBio
+    case imageError
+    case imageTooLarge
 }
 
 class ImageNameConstants {
