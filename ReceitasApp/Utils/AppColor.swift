@@ -14,3 +14,20 @@ enum AppColor {
     static let error = UIColor(named: "ErrorColor")!
     static let warning = UIColor(named: "WarningColor")!
 }
+
+import SwiftUI
+
+struct AppColorSUI {
+    static let primary = Color("PrimaryAppColor")
+    static let background = Color("BackgroundColor")
+    static let title = Color("TitleColor")
+    static let body = Color("BodyColor")
+    static let primaryButton = Color("PrimaryButtonColor")
+    static let primaryButtonDisabled = Color("PrimaryButtonDisabledColor")
+    static let secondaryButton = Color("SecondaryButtonColor")
+    static let secondaryButtonDisabled = Color("SecondaryButtonDisabledColor")
+    static let divider = Color("DividerColor")
+    static let success = Color("SuccessColor")
+    static let error = Color("ErrorColor")
+    static let warning = Color("WarningColor")
+}

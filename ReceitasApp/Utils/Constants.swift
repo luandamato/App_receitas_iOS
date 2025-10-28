@@ -10,6 +10,7 @@ class SizeConstants {
     static let bigMargin: CGFloat = 48
     static let mediumMargin: CGFloat = 32
     static let smallMargin: CGFloat = 16
+    static let xSmallMargin: CGFloat = 4
 }
 
 enum StringNameConstants: String {
@@ -28,6 +29,9 @@ enum StringNameConstants: String {
     case recoveryPasswordButton
     case emailSent
     case home
+    case favorites
+    case profile
+    case search
     case createAccount
     case fullName
     case fullNameHint
@@ -37,10 +41,55 @@ enum StringNameConstants: String {
     case confirmPassword
     case register
     case alredyRegistered
+    case configureProfile
+    case configureProfileDescription
+    case username
+    case usernameHint
+    case bio
+    case bioHint
+    case update
+    case selectPhoto
+    case fromGallery
+    case fromCamera
+    case cancel
+    case addPhoto
+    case sinceAt
+    case editProfile
+    case preferences
+    case myRecipes
+    case changePassword
+    case exit
+    case ingredients
+    case preparation
+    case publishedBy
+    case on
+    case ingredientHint
+    case addIngredient
+    case recipeName
+    case recipeNameHint
+    case description
+    case prepareMode
+    case saveRecipe
+    case updateRecipe
+    case requiredField
+    case fillFullName
+    case invalidEmail
+    case invalidBirthdate
+    case passwordMinLength
+    case passwordsMustMatch
+    case networkError
+    case tooShortBio
+    case tooLongBio
+    case imageError
+    case imageTooLarge
 }
 
 class ImageNameConstants {
     static let welcomeBG = "welcome_bg"
     static let welcomeLogo = "welcome_logo"
     static let back = "back"
+    static let icon = "icon"
+    static let search = "search"
+    static let profile = "ic_profile"
+    static let plus = "plus"
 }

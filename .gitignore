@@ -1,5 +1,30 @@
-# Xcode
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Xcode
 build/
 DerivedData/
 *.pbxuser
@@ -12,23 +37,32 @@ DerivedData/
 !default.perspectivev3
 xcuserdata/
 *.xcscmblueprint
+*.xccheckout
 
-# SwiftPM
+# Xcode workspace (should be generated)
+*.xcworkspace/
+!default.xcworkspace/contents.xcworkspacedata
+
+# Swift Package Manager
 .build/
 Packages/
 Package.pins
 Package.resolved
+.swiftpm/
 
 # CocoaPods
 Pods/
+Podfile.lock
 
 # Carthage
+Carthage/
 Carthage/Build/
 
 # Fastlane
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
+fastlane/test_output/
 
 # SPM Xcode integration
 .xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
@@ -41,9 +75,21 @@ fastlane/screenshots/**/*.png
 timeline.xctimeline
 playground.xcworkspace
 
-# IDEs
+# IDEs and Editors
 .idea/
+.vscode/
+*.swp
+*.swo
 *.sw?
 
-# Personal settings
+# Personal user data
 *.xcuserdatad/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcshareddata/
+*.xcodeproj/xcshareddata/WorkspaceSettings.xcsettings
+
+# GitHub workflow/editor junk
+.github/.DS_Store
+.github/workflows/.DS_Store
