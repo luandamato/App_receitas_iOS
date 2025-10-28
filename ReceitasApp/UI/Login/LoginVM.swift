@@ -26,19 +26,25 @@ class LoginViewModel: LoginViewModelProtocol {
         guard validate(email: email, password: password) else { return }
 
         controller?.setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-            self.controller?.setLoading(visible: false)
-            if email == "teste@teste.com" && password == "1234" {
+        let userRequest = LoginRequest(email: email, password: password)
+        controller?.setLoading(visible: true)
+        APIClient.shared.request(
+            endPoint: .login,
+            method: .post,
+            body: userRequest,
+            headers: ["Custom-Header": "Valor"],
+            onSuccess: { (userResponse: AuthResponse) in
+                self.controller?.setLoading(visible: true)
                 self.controller?.gotoHome()
+                print(userResponse.user.userMetadata.nome ?? "")
+            },
+            onError: { errorMessage, statusCode in
+                self.controller?.setLoading(visible: false)
+                self.genericError = errorMessage
+                self.controller?.updateErros()
+                print("Erro:", errorMessage, "Status code:", statusCode ?? 0)
             }
-            else if password == "12345" {
-                self.passwordError = "Senha incorreta"
-            }
-            else {
-                self.genericError = "Falha na conexão, tente novamente mais tarde"
-            }
-            self.controller?.updateErros()
-         }
+        )
     }
     
     private func validate(email: String, password: String) -> Bool {
