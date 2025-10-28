@@ -36,6 +36,11 @@
 "confirmPassword" = "Confirme sua senha";
 "register" = "Cadastrar";
 "alredyRegistered" = "Já tem uma conta? ";
+"fillFullName" = "Preencha seu nome completo";
+"invalidEmail" = "E-mail inválido";
+"invalidBirthdate" = "Nascimento inválido";
+"passwordMinLength" = "A senha deve ter pelo menos 4 caracteres";
+"passwordsMustMatch" = "As suas senhas devem estar iguais";
 
 //AboutUser
 "configureProfile" = "Configure seu perfil";
@@ -75,8 +80,10 @@
 "profile" = "Perfil";
 "search" = "Buscar";
 
-"addPhoto" = "Add photo";
+"addPhoto" = "Adicionar photo";
 "selectPhoto" = "Escolher foto";
 "fromGallery" = "Escolher da galeria";
 "fromCamera" = "Abrir câmera";
 "cancel" = "Cancelar";
+"requiredField" = "Campo obrigatório";
+"networkError" = "Falha na conexão, tente novamente mais tarde";

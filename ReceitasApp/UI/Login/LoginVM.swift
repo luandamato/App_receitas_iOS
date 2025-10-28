@@ -48,14 +48,14 @@ class LoginViewModel: LoginViewModelProtocol {
 
         // valida e-mail
         if email.isEmpty {
-            emailError = "Campo obrigatório"
+            emailError = String.stringFor(text: .requiredField)
         } else if !isValidEmail(email) {
-            emailError = "E-mail inválido"
+            emailError = String.stringFor(text: .invalidEmail)
         }
 
         // valida senha
         if password.count < 4 {
-            passwordError = "A senha deve ter pelo menos 4 caracteres"
+            passwordError = String.stringFor(text: .passwordMinLength)
         }
         
         controller?.updateErros()

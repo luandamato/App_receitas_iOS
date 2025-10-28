@@ -7,9 +7,16 @@
 
 import UIKit
 
+protocol RegisterControllerProtocol: AnyObject {
+    func gotoUserInfo()
+    func updateErros()
+    func setLoading(visible: Bool)
+}
+
 class SignupVC: BaseViewController {
 
     let cameFromLogin: Bool
+    var viewModel: RegisterViewModelProtocol
     // MARK: - Subviews
 
     private lazy var scrollView: UIScrollView = {
@@ -103,13 +110,16 @@ class SignupVC: BaseViewController {
     }()
     
     // MARK: - Initializer
-    init(cameFromLogin: Bool = false) {
+    init(cameFromLogin: Bool = false, viewModel: RegisterViewModelProtocol = RegisterViewModel()) {
         self.cameFromLogin = cameFromLogin
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.controller = self
     }
 
     required init?(coder: NSCoder) {
         self.cameFromLogin = true
+        self.viewModel = RegisterViewModel()
         super.init(coder: coder)
     }
 
@@ -198,6 +208,29 @@ class SignupVC: BaseViewController {
     }
 
     @objc private func onSignUpClick() {
+        viewModel.register(name: txtName.getTexto(), email: txtEmail.getTexto(),
+                           birthdate: txtBirthdate.getTexto(), password: txtPassword.getTexto(),
+                           confirmPasswrod: txtConfirmPassword.getTexto())
+    }
+}
+
+extension SignupVC: RegisterControllerProtocol {
+    func gotoUserInfo() {
         self.navigationController?.pushViewController(AboutUserVC(cameFromRegister: true), animated: true)
     }
+    
+    func updateErros() {
+        txtName.setError(viewModel.nameError)
+        txtEmail.setError(viewModel.emailError)
+        txtBirthdate.setError(viewModel.birthdateError)
+        txtPassword.setError(viewModel.passwordError)
+        txtConfirmPassword.setError(viewModel.confirmPasswordError)
+        showToast(message: viewModel.genericError)
+    }
+    
+    func setLoading(visible: Bool) {
+        signupButton.setLoading(visible: visible)
+    }
+    
+    
 }
