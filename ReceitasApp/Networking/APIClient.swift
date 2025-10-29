@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 // MARK: - APIClient
+struct AnyCodable: Codable {}
 
 class APIClient {
     static let shared = APIClient()
@@ -16,24 +17,37 @@ class APIClient {
     private var defaultHeaders: HTTPHeaders {
         [
             "apiKey": APIConfig.anonKey,
-            "Authorization": "Bearer SEU_TOKEN"
+            "Authorization": "Bearer \(UserSessionManager.shared.getUser()?.accessToken ?? "")"
         ]
     }
     
     // Função genérica para requisições
-    func request<T: Codable, U: Codable>(
-        baseURL: String? = nil, endPoint: APIEndpoints, method: HTTPMethod = .get,
-        body: T? = nil, headers: [String: String]? = nil, onSuccess: @escaping (U) -> Void,
-        onError: @escaping (_ errorMessage: String, _ statusCode: Int?) -> Void)
+    func request<T: Codable, U: Decodable>(
+            baseURL: String? = nil,
+            endPoint: APIEndpoints,
+            method: HTTPMethod = .get,
+            body: T? = nil,
+            headers: [String: String]? = nil,
+            queryItems: [String: String]? = nil,
+            onSuccess: @escaping (U) -> Void,
+            onError: @escaping (_ errorMessage: String, _ statusCode: Int?) -> Void)
     {
             
-        let urlString = (baseURL ?? APIConfig.baseURL) + endPoint.rawValue
+        var urlString = (baseURL ?? APIConfig.baseURL) + endPoint.path
+        
+        if let queryItems = queryItems, !queryItems.isEmpty {
+            let query = queryItems
+                .map { "\($0.key)=\($0.value)" }
+                .joined(separator: "&")
+            urlString += "?\(query)"
+        }
         
         // Monta os headers finais
         var allHeaders = defaultHeaders
         headers?.forEach { key, value in
             allHeaders.add(name: key, value: value)
         }
+        allHeaders["Content-Type"] = "application/json"
         
         // Monta o encoding e os parâmetros
         let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
@@ -94,7 +108,48 @@ class APIClient {
         }
     }
     
-    func printJSONResponse(_ data: Data) {
+    func uploadImage(
+        baseURL: String? = nil,
+        endPoint: APIEndpoints,
+        imageData: Data,
+        onSuccess: @escaping () -> Void,
+        onError: @escaping (_ errorMessage: String, _ statusCode: Int?) -> Void
+    ) {
+        let urlString = (baseURL ?? APIConfig.baseURL) + endPoint.path
+
+        // Cria headers corretamente tipados
+        var allHeaders = defaultHeaders
+        allHeaders.add(name: "Content-Type", value: "image/png")
+
+        print("======================================================")
+        print("POST -> \(urlString)")
+        print("------------ HEADERS ------------")
+        print(allHeaders)
+        print("------------ BODY ------------")
+        print("Image data size: \(imageData.count) bytes")
+        print("======================================================")
+
+        AF.upload(imageData, to: urlString, method: .post, headers: allHeaders)
+            .validate()
+            .responseData { (response: AFDataResponse<Data>) in
+                switch response.result {
+                case .success:
+                    onSuccess()
+                case .failure(let error):
+                    let statusCode = response.response?.statusCode
+                    var message = error.localizedDescription
+
+                    if let data = response.data,
+                       let apiError = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                        message = apiError.msg
+                    }
+                    onError(message, statusCode)
+                }
+            }
+    }
+
+    
+    private func printJSONResponse(_ data: Data) {
         if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
            let prettyData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted),
            let prettyString = String(data: prettyData, encoding: .utf8) {

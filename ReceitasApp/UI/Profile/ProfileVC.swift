@@ -213,10 +213,10 @@ class ProfileVC: BaseViewController {
     
     private func configureUser() {
         userImageView.image = userImage
-        lblName.text = userName
-        lblEmail.text = userEmail
+        lblName.text = UserSessionManager.shared.getUser()?.user.userMetadata.nome
+        lblEmail.text = UserSessionManager.shared.getUser()?.user.userMetadata.email
         lblBio.text = userBio
-        lblSince.text = userSince
+        lblSince.text = UserSessionManager.shared.getUser()?.user.confirmedAt
     }
     
     // MARK: - Actions
@@ -242,6 +242,9 @@ class ProfileVC: BaseViewController {
     }
     
     @objc private func logout() {
-        print("Sair da conta")
+        let nav = UINavigationController(rootViewController: WelcomeVC())
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
+        UserSessionManager.shared.clearUser()
     }
 }

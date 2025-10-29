@@ -34,9 +34,9 @@ class LoginViewModel: LoginViewModelProtocol {
             body: userRequest,
             headers: ["Custom-Header": "Valor"],
             onSuccess: { (userResponse: AuthResponse) in
+                UserSessionManager.shared.saveUser(userResponse)
                 self.controller?.setLoading(visible: true)
                 self.controller?.gotoHome()
-                print(userResponse.user.userMetadata.nome ?? "")
             },
             onError: { errorMessage, statusCode in
                 self.controller?.setLoading(visible: false)

@@ -34,11 +34,24 @@ class RegisterViewModel: RegisterViewModelProtocol {
         else { return }
 
         controller?.setLoading(visible: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-            self.controller?.setLoading(visible: false)
-            self.controller?.updateErros()
-            self.controller?.gotoUserInfo()
-         }
+        let body = RegisterRequest(email: email,
+                                   password: password,
+                                   data: RegisterData(nome: name, nascimento: convertDate(birthdate)))
+        APIClient.shared.request(
+            endPoint: .register,
+            method: .post,
+            body: body,
+            onSuccess: { (userResponse: AuthResponse) in
+                UserSessionManager.shared.saveUser(userResponse)
+                self.controller?.setLoading(visible: false)
+                self.controller?.gotoUserInfo()
+            },
+            onError: { errorMessage, statusCode in
+                self.controller?.setLoading(visible: false)
+                self.genericError = errorMessage
+                self.controller?.updateErros()
+            }
+        )
     }
     
     private func validate(name: String, email: String, birthdate: String, password: String, confirmPasswrod: String) -> Bool {
@@ -106,11 +119,26 @@ class RegisterViewModel: RegisterViewModelProtocol {
         guard let idade = idadeComponentes.year else {
             return false
         }
+        
+        if convertDate(dataStr).isEmpty {
+            return false
+        }
 
         if dataNascimento > hoje {
             return false
         }
         return idade >= 0 && idade <= 100
+    }
+    
+    func convertDate(_ dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "dd/MM/yyyy"
+        if let date = inputFormatter.date(from: dateString) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "yyyy-MM-dd"
+            return outputFormatter.string(from: date)
+        }
+        return ""
     }
 }
 

@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct refreshTokenRequest: Codable {
+    let refresh_token: String
+}
+
 struct LoginRequest: Codable {
     let email: String
     let password: String

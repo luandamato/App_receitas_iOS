@@ -13,6 +13,7 @@ struct Recipe: Codable {
     var description: String?
     var imageName: String?
     var owner: String? = ""
+    var ownerId: String? = ""
     var date: String? = ""
     var ingredients: [String]? = []
     var preparation: String? = ""

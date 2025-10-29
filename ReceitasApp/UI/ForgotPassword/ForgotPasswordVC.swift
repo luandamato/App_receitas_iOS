@@ -10,6 +10,7 @@ import UIKit
 protocol ForgotPasswordControllerProtocol: AnyObject {
     func backToLogin()
     func updateErros()
+    func setLoading(visible: Bool)
 }
 
 class ForgotPasswordVC: BaseViewController {
@@ -108,5 +109,9 @@ extension ForgotPasswordVC: ForgotPasswordControllerProtocol {
     func updateErros() {
         txtEmail.setError(viewModel.emailError)
         showToast(message: viewModel.genericError)
+    }
+
+    func setLoading(visible: Bool) {
+        sendEmailButton.setLoading(visible: visible)
     }
 }
