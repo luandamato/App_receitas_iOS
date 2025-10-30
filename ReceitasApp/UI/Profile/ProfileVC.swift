@@ -7,8 +7,13 @@
 
 import UIKit
 
+protocol ProfileControllerProtocol: AnyObject {
+    func updateUser()
+}
+
 class ProfileVC: BaseViewController {
     
+    var viewModel: ProfileViewModelProtocol
     // MARK: - Mock data (depois você pode carregar do user real)
     private let userImage = UIImage(named: ImageNameConstants.profile)
     private let userName = "Luan Damato"
@@ -30,15 +35,10 @@ class ProfileVC: BaseViewController {
         return view
     }()
     
-    private let userImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.layer.cornerRadius = 60
-        iv.layer.masksToBounds = true
-        iv.layer.borderColor = UIColor.lightGray.cgColor
-        iv.layer.borderWidth = 1
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
+    private lazy var userImageView: UserPhotoPickerView = {
+        let view = UserPhotoPickerView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let lblName: CustomLabel = {
@@ -91,12 +91,28 @@ class ProfileVC: BaseViewController {
         return stack
     }()
     
+    // MARK: - Initializer
+    init(viewModel: ProfileViewModelProtocol = ProfileViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.controller = self
+    }
+
+    required init?(coder: NSCoder) {
+        self.viewModel = ProfileViewModel()
+        super.init(coder: coder)
+    }
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         configureUser()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.updateUser()
     }
     
     // MARK: - Setup
@@ -125,8 +141,6 @@ class ProfileVC: BaseViewController {
             
             userImageView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
             userImageView.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
-            userImageView.widthAnchor.constraint(equalToConstant: 120),
-            userImageView.heightAnchor.constraint(equalToConstant: 120),
             
             lblName.topAnchor.constraint(equalTo: userImageView.bottomAnchor, constant: SizeConstants.smallMargin),
             lblName.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
@@ -212,11 +226,24 @@ class ProfileVC: BaseViewController {
     // MARK: - Configure
     
     private func configureUser() {
-        userImageView.image = userImage
+        userImageView.setEditable(false)
+        userImageView.setImageFor(link: UserSessionManager.shared.getUser()?.user.userMetadata.avatarUrl)
         lblName.text = UserSessionManager.shared.getUser()?.user.userMetadata.nome
         lblEmail.text = UserSessionManager.shared.getUser()?.user.userMetadata.email
-        lblBio.text = userBio
-        lblSince.text = UserSessionManager.shared.getUser()?.user.confirmedAt
+        lblBio.text = UserSessionManager.shared.getUser()?.user.userMetadata.bio
+        lblSince.text = convertISOToBR(UserSessionManager.shared.getUser()?.user.createdAt)
+    }
+    
+    private func convertISOToBR(_ isoString: String?) -> String? {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = isoFormatter.date(from: isoString ?? "") {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "dd/MM/yyyy"
+            outputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return outputFormatter.string(from: date)
+        }
+        return nil
     }
     
     // MARK: - Actions
@@ -246,5 +273,11 @@ class ProfileVC: BaseViewController {
         nav.modalPresentationStyle = .fullScreen
         self.present(nav, animated: true, completion: nil)
         UserSessionManager.shared.clearUser()
+    }
+}
+
+extension ProfileVC: ProfileControllerProtocol {
+    func updateUser() {
+        configureUser()
     }
 }

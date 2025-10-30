@@ -23,31 +23,22 @@ class AboutUserViewModel: AboutUserViewModelProtocol {
     private(set) var usernameError: String?
     private(set) var genericError: String?
     private var imageData: Data?
+    private var username = ""
+    private var bio = ""
     
     func update(username: String, bio: String, photo: UIImage?) {
         guard validate(username: username, bio: bio, photo: photo) else { return }
         
+        self.username = username
+        self.bio = bio
+        
         controller?.setLoading(visible: true)
-        let body = AboutUserRequest(data: AboutUserData(username: username, bio: bio))
-        APIClient.shared.request(
-            endPoint: .updateUser,
-            method: .put,
-            body: body,
-            onSuccess: { (_: AnyCodable) in
-                if self.imageData != nil {
-                    self.uploadPhoto()
-                }
-                else{
-                    self.controller?.setLoading(visible: false)
-                    self.controller?.gotoHome()
-                }
-            },
-            onError: { errorMessage, statusCode in
-                self.controller?.setLoading(visible: false)
-                self.genericError = errorMessage
-                self.controller?.updateErros()
-            }
-        )
+        if self.imageData != nil {
+            self.uploadPhoto()
+        }
+        else{
+            self.updateInfos(imageName: nil)
+        }
     }
     
     private func uploadPhoto() {
@@ -60,7 +51,25 @@ class AboutUserViewModel: AboutUserViewModelProtocol {
         APIClient.shared.uploadImage(
             endPoint: .uploadPhoto(userId: userId),
             imageData: imageData,
-            onSuccess: {
+            onSuccess: { (response: KeyId) in
+                let imageName = APIConfig.baseURL + APIConfig.storage + response.Key
+                self.updateInfos(imageName: imageName)
+            },
+            onError: { errorMessage, statusCode in
+                self.genericError = errorMessage +  "Não foi possivel atualizar sua foto"
+                self.controller?.updateErros()
+                self.updateInfos(imageName: nil)
+            }
+        )
+    }
+    
+    private func updateInfos(imageName: String?) {
+        let body = AboutUserRequest(data: AboutUserData(username: username, bio: bio, avatar: imageName))
+        APIClient.shared.request(
+            endPoint: .updateUser,
+            method: .put,
+            body: body,
+            onSuccess: { (_: AnyCodable) in
                 self.controller?.setLoading(visible: false)
                 self.controller?.gotoHome()
             },

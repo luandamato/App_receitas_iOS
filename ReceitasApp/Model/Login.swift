@@ -22,7 +22,7 @@ struct AuthResponse: Codable {
     let expiresIn: Int
     let expiresAt: Int
     let refreshToken: String
-    let user: User
+    var user: User
     let weakPassword: String?
 
     enum CodingKeys: String, CodingKey {
@@ -71,18 +71,21 @@ struct AppMetadata: Codable {
 }
 
 struct UserMetadata: Codable {
-    let documento: String?
+    let bio: String?
+    let username: String?
     let email: String?
     let emailVerified: Bool?
     let nascimento: String?
     let nome: String?
     let phoneVerified: Bool?
     let sub: String?
+    let avatarUrl: String?
 
     enum CodingKeys: String, CodingKey {
-        case documento, email, nascimento, nome, sub
+        case username, bio, email, nascimento, nome, sub
         case emailVerified = "email_verified"
         case phoneVerified = "phone_verified"
+        case avatarUrl = "avatar_url"
     }
 }
 

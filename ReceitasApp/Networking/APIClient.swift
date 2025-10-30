@@ -26,7 +26,7 @@ class APIClient {
             baseURL: String? = nil,
             endPoint: APIEndpoints,
             method: HTTPMethod = .get,
-            body: T? = nil,
+            body: T? = AnyCodable(),
             headers: [String: String]? = nil,
             queryItems: [String: String]? = nil,
             onSuccess: @escaping (U) -> Void,
@@ -108,11 +108,11 @@ class APIClient {
         }
     }
     
-    func uploadImage(
+    func uploadImage<T: Decodable>(
         baseURL: String? = nil,
         endPoint: APIEndpoints,
         imageData: Data,
-        onSuccess: @escaping () -> Void,
+        onSuccess: @escaping (T) -> Void,
         onError: @escaping (_ errorMessage: String, _ statusCode: Int?) -> Void
     ) {
         let urlString = (baseURL ?? APIConfig.baseURL) + endPoint.path
@@ -133,8 +133,13 @@ class APIClient {
             .validate()
             .responseData { (response: AFDataResponse<Data>) in
                 switch response.result {
-                case .success:
-                    onSuccess()
+                case .success(let data):
+                    do {
+                        let decoded = try JSONDecoder().decode(T.self, from: data)
+                        onSuccess(decoded)
+                    } catch {
+                        onError("Erro ao decodificar resposta", response.response?.statusCode)
+                    }
                 case .failure(let error):
                     let statusCode = response.response?.statusCode
                     var message = error.localizedDescription

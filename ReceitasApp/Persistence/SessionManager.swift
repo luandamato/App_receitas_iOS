@@ -29,4 +29,10 @@ class UserSessionManager {
     func clearUser() {
         UserDefaults.standard.removeObject(forKey: userKey)
     }
+    
+    func update(user: User) {
+        guard var savedUser = getUser() else { return }
+        savedUser.user = user
+        saveUser(savedUser)
+    }
 }

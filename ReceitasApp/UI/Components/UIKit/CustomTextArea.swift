@@ -228,8 +228,8 @@ class CustomTextArea: UIView, UITextViewDelegate {
         viewBorda.backgroundColor = AppColor.background
     }
     
-    func set(texto: String){
-        self.editText.text = texto
+    func set(texto: String?){
+        self.editText.text = texto ?? ""
     }
     
     func getTexto() -> String{

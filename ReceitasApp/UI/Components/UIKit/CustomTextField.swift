@@ -309,8 +309,8 @@ extension CustomEditText{
         return self.editText.text ?? ""
     }
     
-    func set(texto: String){
-        self.editText.text = texto
+    func set(texto: String?){
+        self.editText.text = texto ?? ""
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
