@@ -79,7 +79,7 @@ struct CustomLabelView: UIViewRepresentable {
     var textSize: Float = 15
 
     func makeUIView(context: Context) -> CustomLabel {
-        let label = CustomLabel(text: text, type: type)
+        let label = CustomLabel(text: text?.replacingOccurrences(of: "\\n", with: "\n"), type: type)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
@@ -87,7 +87,7 @@ struct CustomLabelView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: CustomLabel, context: Context) {
-        uiView.texto = text ?? ""
+        uiView.texto = text?.replacingOccurrences(of: "\\n", with: "\n") ?? ""
         uiView.fontSize = CGFloat(textSize)
         uiView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 32
     }

@@ -9,9 +9,7 @@ import UIKit
 
 class FavoritesVC: BaseViewController {
     
-    private var recipes: [Recipe] = [
-        Recipe(name: "Chocolate Cake", description: "Rich and moist cake topped with creamy chocolate frosting.", imageName: "cake", ingredients: ["infrediente 1 ","ingredient2"])
-    ]
+    private var recipes: [Recipe] = []
     
     private let lblTitle: CustomLabel = {
         let view = CustomLabel(text: String.stringFor(text: StringNameConstants.favorites), type: .title)

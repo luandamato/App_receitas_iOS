@@ -18,14 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         configureAppCenter()
-        
-        let token = UserDefaults.standard.string(forKey: "token")
-        if token != nil {
-            window?.rootViewController = UINavigationController(rootViewController: HomeVC())
-        } else {
-            window?.rootViewController = UINavigationController(rootViewController: WelcomeVC())
-        }
-        
+        loadScreen()
         window?.makeKeyAndVisible()
         return true
     }
@@ -52,5 +45,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    private func loadScreen() {
+        window?.rootViewController = UINavigationController(rootViewController: WelcomeVC())
+        guard let user = UserSessionManager.shared.getUser() else {
+            return
+        }
+        let body = refreshTokenRequest(refresh_token: user.refreshToken)
+        APIClient.shared.request(
+            endPoint: .refreshToken,
+            method: .post,
+            body: body,
+            onSuccess: { (userResponse: AuthResponse) in
+                UserSessionManager.shared.saveUser(userResponse)
+                
+                let home = MainTabBarController()
+                home.modalPresentationStyle = .fullScreen
+                self.window?.rootViewController = home
+            },
+            onError: { errorMessage, statusCode in
+                UIApplication.shared.getTopViewController?.showToast(message: errorMessage)
+                UserSessionManager.shared.clearUser()
+            }
+        )
+    }
 }
-

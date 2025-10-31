@@ -25,7 +25,7 @@ struct AddRecipeView: View {
                 // MARK: - Foto
                 RecipePhotoPickerView(
                     image: $image,
-                    existingImageName: existingRecipe?.imageName
+                    existingImageName: existingRecipe?.images?[0]
                 )
                 
                 // MARK: - Título
@@ -84,28 +84,28 @@ struct AddRecipeView: View {
     func saveRecipe() {
         isLoading = true
         print(name)
-        if let current = existingRecipe {
-            let update = Recipe(
-                id: current.id,
-                name: name,
-                description: description,
-                imageName: "",
-                owner: current.owner,
-                date: current.date,
-                ingredients: ingredients.filter { !$0.isEmpty },
-                preparation: prepare
-            )
-            print("🔄 Atualiza receita \(update)")
-        } else {
-            let newRecipe = Recipe(
-                id: "", name: name,
-                description: description,
-                imageName: "",
-                ingredients: ingredients.filter { !$0.isEmpty },
-                preparation: prepare
-            )
-            print("🆕 Nova receita \(newRecipe)")
-        }
+//        if let current = existingRecipe {
+//            let update = Recipe(
+//                id: current.id,
+//                name: name,
+//                description: description,
+//                imageName: "",
+//                owner: current.owner,
+//                date: current.date,
+//                ingredients: ingredients.filter { !$0.isEmpty },
+//                preparation: prepare
+//            )
+//            print("🔄 Atualiza receita \(update)")
+//        } else {
+//            let newRecipe = Recipe(
+//                id: "", name: name,
+//                description: description,
+//                imageName: "",
+//                ingredients: ingredients.filter { !$0.isEmpty },
+//                preparation: prepare
+//            )
+//            print("🆕 Nova receita \(newRecipe)")
+//        }
     }
 }
 

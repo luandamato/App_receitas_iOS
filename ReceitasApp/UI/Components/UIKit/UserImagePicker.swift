@@ -45,8 +45,8 @@ class UserPhotoPickerView: UIView {
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 100),
-            imageView.heightAnchor.constraint(equalToConstant: 100)
+            imageView.widthAnchor.constraint(equalToConstant: 125),
+            imageView.heightAnchor.constraint(equalToConstant: 125)
         ])
 
         NSLayoutConstraint.activate([
@@ -68,6 +68,7 @@ class UserPhotoPickerView: UIView {
     
     @objc private func selectImageTapped() {
         guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        if addButton.isHidden { return }
 
         let alert = UIAlertController(title: String.stringFor(text: .selectPhoto), message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: String.stringFor(text: .fromCamera), style: .default, handler: { _ in
@@ -88,6 +89,14 @@ class UserPhotoPickerView: UIView {
         picker.delegate = self
         picker.allowsEditing = true
         controller.present(picker, animated: true)
+    }
+    
+    public func setEditable(_ canEdit: Bool) {
+        addButton.isHidden = !canEdit
+    }
+    
+    public func setImageFor(link: String?) {
+        imageView.setImage(from: link)
     }
 }
 

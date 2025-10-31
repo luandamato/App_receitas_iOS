@@ -22,6 +22,23 @@ class ForgotPasswordViewModel: ForgotPasswordViewModelProtocol {
 
     func sendEmail(email: String) {
         guard validate(email: email) else { return }
+        
+        let body = ForgotPasswordRequest(email: email)
+        APIClient.shared.request(
+            endPoint: .recoverPassword,
+            method: .post,
+            body: body,
+            onSuccess: { (response: EmptyResponse) in
+                self.controller?.setLoading(visible: false)
+                self.controller?.backToLogin()
+            },
+            onError: { errorMessage, statusCode in
+                self.controller?.setLoading(visible: false)
+                self.genericError = errorMessage
+                self.controller?.updateErros()
+            }
+        )
+        
         controller?.backToLogin()
     }
     
