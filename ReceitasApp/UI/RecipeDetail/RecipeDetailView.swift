@@ -26,20 +26,32 @@ struct IngredientsListView: View {
 }
 
 struct RecipeHeader: View {
-    let meat: Recipe
+    let meal: Recipe
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            CustomLabelView(text: meat.name, type: .title, textSize: 20)
+            CustomLabelView(text: meal.name, type: .title, textSize: 20)
                 .fixedSize(horizontal: false, vertical: true)
             
-            CustomLabelView(text: "\(String.stringFor(text: .publishedBy)) \(meat.owner ?? "") \(String.stringFor(text: .on)) \(meat.date ?? "")",
+            CustomLabelView(text: "\(String.stringFor(text: .publishedBy)) \(meal.owner ?? "") \(String.stringFor(text: .on)) \(convertISOToBR(meal.date) ?? "")",
                             type: .body, textSize: 12)
             .fixedSize(horizontal: false, vertical: true)
             
-            CustomLabelView(text: meat.description, type: .body)
+            CustomLabelView(text: meal.description, type: .body)
                 .fixedSize(horizontal: false, vertical: true).padding(.top, 12)
         }
+    }
+    
+    private func convertISOToBR(_ isoString: String?) -> String? {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = isoFormatter.date(from: isoString ?? "") {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "dd/MM/yyyy"
+            outputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return outputFormatter.string(from: date)
+        }
+        return nil
     }
 }
 
@@ -52,10 +64,10 @@ struct RefeicaoView: View {
     var body: some View {
         ScrollView{
             VStack(alignment: .leading) {
-                Image(refeicao.imageName ?? "").resizable().aspectRatio(contentMode: .fit)
+                URLImage(url: URL(string: refeicao.images?.first ?? ""))
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    RecipeHeader(meat: refeicao)
+                    RecipeHeader(meal: refeicao)
                     IngredientsListView(ingredients: refeicao.ingredients ?? [])
                     
                     Text(String.stringFor(text:.preparation)).fontWeight(.semibold).font(.system(size: 15)).padding(.top)
@@ -68,10 +80,10 @@ struct RefeicaoView: View {
     }
 }
 
-struct RefeicaoView_Previews: PreviewProvider {
-    static var previews: some View {
-        RefeicaoView(refeicao: Recipe(name: "Nome",
-                                      description: "asdasndjsnfdsf dsjf dsjf djf dsjf djs fdsj fdsf meio sdjfsd fdjs fdsjf sdj fjdsfsdjf", imageName: "cake",
-                                      ingredients: ["infrediente 1 ","ingredient2"]))
-    }
-}
+//struct RefeicaoView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RefeicaoView(refeicao: Recipe(name: "Nome",
+//                                      description: "asdasndjsnfdsf dsjf dsjf djf dsjf djs fdsj fdsf meio sdjfsd fdjs fdsjf sdj fjdsfsdjf", imageName: "cake",
+//                                      ingredients: ["infrediente 1 ","ingredient2"]))
+//    }
+//}

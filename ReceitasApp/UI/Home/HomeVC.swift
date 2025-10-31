@@ -7,70 +7,20 @@
 
 import UIKit
 
-class HomeVC: UIViewController {
+protocol HomeControllerProtocol: AnyObject {
+    func reloadList(items: [Recipe])
+    func addRecipes(items: [Recipe])
+    func setLoading(visible: Bool, pagination: Bool)
+    func showMessage(_ message: String)
+    var hasMoreData: Bool { get set }
+}
+
+class HomeVC: BaseViewController {
     
-    private var recipes: [Recipe] = [
-        Recipe(
-            id: "",
-            name: "Bolo de Chocolate",
-            description: "Um bolo fofinho e delicioso.",
-            imageName: "cake",
-            owner: "Maria",
-            date: "10/06/2024",
-            ingredients: ["2 xícaras de farinha", "1 xícara de açúcar", "1 xícara de chocolate em pó", "3 ovos", "1 xícara de leite"],
-            preparation: "Misture todos os ingredientes, asse por 40 minutos a 180ºC."
-        ),
-        Recipe(
-            id: "",
-            name: "Lasanha de Frango",
-            description: "Lasanha cremosa com molho branco.",
-            imageName: "pasta",
-            owner: "João",
-            date: "05/06/2024",
-            ingredients: ["500g de frango desfiado", "Massa para lasanha", "Molho branco", "Queijo mussarela"],
-            preparation: "Monte as camadas e leve ao forno por 30 minutos."
-        ),
-        Recipe(
-            id: "",
-            name: "Salada Caesar",
-            description: "Salada leve e refrescante.",
-            imageName: "salad",
-            owner: "Ana",
-            date: "01/06/2024",
-            ingredients: ["Alface", "Frango grelhado", "Croutons", "Molho Caesar", "Parmesão"],
-            preparation: "Misture todos os ingredientes e sirva gelado."
-        ),
-        Recipe(
-            id: "",
-            name: "Risoto de Cogumelos",
-            description: "Risoto cremoso com cogumelos frescos.",
-            imageName: "pasta",
-            owner: "Carlos",
-            date: "12/05/2024",
-            ingredients: ["Arroz arbório", "Cogumelos frescos", "Caldo de legumes", "Parmesão"],
-            preparation: "Cozinhe o arroz com caldo, adicione cogumelos e finalize com parmesão."
-        ),
-        Recipe(
-            id: "",
-            name: "Torta de Limão",
-            description: "Torta doce com sabor cítrico.",
-            imageName: "cake",
-            owner: "Fernanda",
-            date: "20/05/2024",
-            ingredients: ["Biscoito maisena", "Leite condensado", "Limão", "Creme de leite"],
-            preparation: "Prepare a base, recheie e leve à geladeira por 2 horas."
-        ),
-        Recipe(
-            id: "",
-            name: "Feijoada",
-            description: "Prato típico brasileiro, rico em sabor.",
-            imageName: "pasta",
-            owner: "Pedro",
-            date: "15/06/2024",
-            ingredients: ["Feijão preto", "Carne seca", "Linguiça", "Costelinha de porco"],
-            preparation: "Cozinhe tudo junto até ficar macio. Sirva com arroz e couve."
-        )
-    ]
+    private var recipes: [Recipe] = []
+    var viewModel: HomeViewModelProtocol
+    var hasMoreData = true
+    var isLoading = false
     
     private lazy var viewHeader: UIView = {
         let view = UIView()
@@ -140,10 +90,22 @@ class HomeVC: UIViewController {
         return button
     }()
     
+    init(viewModel: HomeViewModelProtocol = HomeViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.controller = self
+    }
+
+    required init?(coder: NSCoder) {
+        self.viewModel = HomeViewModel()
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
         setupTableView()
+        viewModel.getList()
     }
     
     private func setupTableView() {
@@ -235,6 +197,13 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // Quando chegar nos últimos 5 itens, tenta carregar mais
+        if indexPath.row == recipes.count - 1 && !isLoading && hasMoreData {
+            viewModel.getNextPage()
+        }
+    }
 }
 
 extension HomeVC: SearchDelegate {
@@ -243,5 +212,28 @@ extension HomeVC: SearchDelegate {
     }
     func searchLocal(value: String) {
         
+    }
+}
+
+extension HomeVC: HomeControllerProtocol {
+    func reloadList(items: [Recipe]) {
+        self.recipes = items
+        self.tableView.reloadData()
+    }
+    
+    func addRecipes(items: [Recipe]) {
+        self.recipes.append(contentsOf: items)
+        self.tableView.reloadData()
+    }
+
+    func setLoading(visible: Bool, pagination: Bool) {
+        if pagination {
+            isLoading = visible
+        }
+        self.setLoading(visible: visible, fullScreen: !pagination)
+    }
+
+    func showMessage(_ message: String) {
+        showToast(message: message)
     }
 }

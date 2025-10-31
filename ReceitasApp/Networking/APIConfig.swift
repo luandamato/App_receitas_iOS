@@ -22,6 +22,7 @@ enum APIEndpoints {
     case refreshToken
     case recoverPassword
     case getLoggedUser
+    case getRecipes(page: Int)
 
     /// Caminho completo do endpoint
     var path: String {
@@ -45,6 +46,9 @@ enum APIEndpoints {
             return "auth/v1/recover"
         case .getLoggedUser:
             return "auth/v1/user"
+        case .getRecipes(let page):
+            let recipesPerPage = 10
+            return "rest/v1/receitas?select=*&order=created_at.desc&limit=\(recipesPerPage)&offset=\(recipesPerPage * page)"
         }
     }
 }
