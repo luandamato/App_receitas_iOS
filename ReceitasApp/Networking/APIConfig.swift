@@ -12,6 +12,7 @@ enum APIConfig {
     static let baseURL = "https://sippjzdrkwsuhdqquvtx.supabase.co/"
     static let anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcHBqemRya3dzdWhkcXF1dnR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3NDIzNTYsImV4cCI6MjA3NzMxODM1Nn0.9mf6_R0WZikk4E_iz4CY3vyLrhgaBvWDtFSKOUMgDoE"
     static let storage = "storage/v1/object/public/"
+    static let recipesPerPage = 10
 }
 
 enum APIEndpoints {
@@ -23,6 +24,7 @@ enum APIEndpoints {
     case recoverPassword
     case getLoggedUser
     case getRecipes(page: Int)
+    case filterRecipes(page: Int, filter: String)
 
     /// Caminho completo do endpoint
     var path: String {
@@ -47,8 +49,11 @@ enum APIEndpoints {
         case .getLoggedUser:
             return "auth/v1/user"
         case .getRecipes(let page):
-            let recipesPerPage = 10
-            return "rest/v1/receitas?select=*&order=created_at.desc&limit=\(recipesPerPage)&offset=\(recipesPerPage * page)"
+            let items = APIConfig.recipesPerPage
+            return "rest/v1/receitas?select=*&order=created_at.desc&limit=\(items)&offset=\(items * page)"
+        case .filterRecipes(let page, let searchValue):
+            let items = APIConfig.recipesPerPage
+            return "rest/v1/receitas?select=*&order=created_at.desc&limit=\(items)&offset=\(items * page)&or=(name.ilike.%\(searchValue)%,owner.ilike.%\(searchValue)%)"
         }
     }
 }

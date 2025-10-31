@@ -199,20 +199,26 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Quando chegar nos últimos 5 itens, tenta carregar mais
-        if indexPath.row == recipes.count - 1 && !isLoading && hasMoreData {
+        // Quando chegar nos últimos 2 itens, tenta carregar mais
+        if indexPath.row == recipes.count - 2 && !isLoading && hasMoreData {
             viewModel.getNextPage()
         }
     }
 }
 
 extension HomeVC: SearchDelegate {
-    func searchRemote(value: String) {
-        
+    func searchButtonPessed(value: String) {
+        viewModel.filterOnline(searchText: value)
     }
-    func searchLocal(value: String) {
-        
+
+    func typingStop(value: String) {
+        // protocol
     }
+
+    func userType(value: String) {
+        viewModel.filterRecipes(searchText: value)
+    }
+    
 }
 
 extension HomeVC: HomeControllerProtocol {

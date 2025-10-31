@@ -63,7 +63,7 @@ extension BaseViewController {
     func setLoading(visible: Bool, fullScreen: Bool = true){
         self.view.bringSubviewToFront(loadView)
         if !visible{
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0i) {
                 self.loadView.alpha = 0
             }
             return
