@@ -29,6 +29,18 @@ class FavoritesVC: BaseViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let recipes = RecipeCoreDataManager.shared.getAll()
+        print("\(recipes.count)")
+        print(recipes.first?.name)
+        print(recipes.first?.id)
+        print(((recipes.first?.images) as? [String])?.first)
+        
+        RecipeCoreDataManager.shared.delete(recipe: recipes.first!)
+        print("\(recipes.count)")
+    }
+    
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self

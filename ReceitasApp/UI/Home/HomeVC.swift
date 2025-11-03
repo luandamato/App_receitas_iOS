@@ -170,9 +170,12 @@ class HomeVC: BaseViewController {
     }
     
     @objc private func addButtonTapped() {
-        let vc = SwiftUiVC(swiftUIView: AddRecipeView())
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
+//        let vc = SwiftUiVC(swiftUIView: AddRecipeView())
+//        vc.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(vc, animated: true)
+        
+        print("adicionando \n \(self.recipes[0])")
+        RecipeCoreDataManager.shared.create(recipeData: self.recipes[0])
     }
 
 }
