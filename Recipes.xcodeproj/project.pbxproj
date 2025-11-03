@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		C09128DAD6B4BC33EE32FD43 /* Pods_Recipes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3508E6073806BE55BF432659 /* Pods_Recipes.framework */; };
+		EEA29D782EB81D8800723B80 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EEA29D762EB81D8800723B80 /* Model.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3508E6073806BE55BF432659 /* Pods_Recipes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Recipes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD8197AE86F807684BAC944 /* Pods-Recipes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipes.debug.xcconfig"; path = "Target Support Files/Pods-Recipes/Pods-Recipes.debug.xcconfig"; sourceTree = "<group>"; };
 		D6029A0512678540688C4309 /* Pods-Recipes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipes.release.xcconfig"; path = "Target Support Files/Pods-Recipes/Pods-Recipes.release.xcconfig"; sourceTree = "<group>"; };
+		EEA29D772EB81D8800723B80 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		EEECAC952EA13BE200E5079A /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -70,6 +72,7 @@
 		EEECAC8C2EA13BE200E5079A = {
 			isa = PBXGroup;
 			children = (
+				EEA29D762EB81D8800723B80 /* Model.xcdatamodeld */,
 				EEECAC972EA13BE200E5079A /* ReceitasApp */,
 				EEECAC962EA13BE200E5079A /* Products */,
 				18559477DD2C61D451B66258 /* Pods */,
@@ -216,6 +219,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEA29D782EB81D8800723B80 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +429,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EEA29D762EB81D8800723B80 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EEA29D772EB81D8800723B80 /* Model.xcdatamodel */,
+			);
+			currentVersion = EEA29D772EB81D8800723B80 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EEECAC8D2EA13BE200E5079A /* Project object */;
 }
