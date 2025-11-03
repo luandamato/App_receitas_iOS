@@ -11,8 +11,9 @@ import UIKit
 import SwiftUI
 
 protocol SearchDelegate {
-    func searchLocal(value: String)
-    func searchRemote(value: String)
+    func searchButtonPessed(value: String)
+    func typingStop(value: String)
+    func userType(value: String)
 }
 
 @IBDesignable
@@ -183,7 +184,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
         guard let value = self.editText.text else {
             return
         }
-        self.searchDelegate?.searchRemote(value: value)
+        self.searchDelegate?.searchButtonPessed(value: value)
     }
     
     private func setup() {
@@ -309,8 +310,8 @@ extension CustomEditText{
         return self.editText.text ?? ""
     }
     
-    func set(texto: String){
-        self.editText.text = texto
+    func set(texto: String?){
+        self.editText.text = texto ?? ""
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -319,14 +320,14 @@ extension CustomEditText{
         // ao digitar procura resultado localmente, se parar de digitar por 2 segundos busca novos resultados na API
         let currentText = (textField.text ?? "") as NSString
         let newText = currentText.replacingCharacters(in: range, with: string)
-        self.searchDelegate?.searchLocal(value: newText)
+        self.searchDelegate?.userType(value: newText)
         
         debounceTimer?.invalidate()
         debounceTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] _ in
             guard let value = self?.editText.text else {
                 return
             }
-            self?.searchDelegate?.searchRemote(value: value)
+            self?.searchDelegate?.typingStop(value: value)
         }
         
         return true
@@ -339,7 +340,7 @@ extension CustomEditText{
         guard let value = self.editText.text else {
             return true
         }
-        self.searchDelegate?.searchRemote(value: value)
+        self.searchDelegate?.searchButtonPessed(value: value)
         return true
     }
 }
@@ -350,8 +351,9 @@ struct CustomEditTextView: UIViewRepresentable {
     var placeholder: String
     var type: CustomEditText.CustomEditTextType
     var enable: Bool = true
-    var onSearchLocal: ((String) -> Void)? = nil
-    var onSearchRemote: ((String) -> Void)? = nil
+    var searchButtonPessed: ((String) -> Void)? = nil
+    var typingStop: ((String) -> Void)? = nil
+    var userType: ((String) -> Void)? = nil
 
     func makeUIView(context: Context) -> CustomEditText {
         let view = CustomEditText(titulo: title, placeholder: placeholder)
@@ -382,10 +384,12 @@ struct CustomEditTextView: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, SearchDelegate, UITextFieldDelegate {
+        
         var parent: CustomEditTextView
         init(parent: CustomEditTextView) { self.parent = parent }
-        func searchLocal(value: String) { parent.onSearchLocal?(value) }
-        func searchRemote(value: String) { parent.onSearchRemote?(value) }
+        func searchButtonPessed(value: String) { parent.searchButtonPessed?(value) }
+        func typingStop(value: String) { parent.typingStop?(value) }
+        func userType(value: String) { parent.userType?(value) }
         func textFieldDidChangeSelection(_ textField: UITextField) {
             parent.text = textField.text ?? ""
         }

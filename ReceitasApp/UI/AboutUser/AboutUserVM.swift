@@ -23,10 +23,62 @@ class AboutUserViewModel: AboutUserViewModelProtocol {
     private(set) var usernameError: String?
     private(set) var genericError: String?
     private var imageData: Data?
+    private var username = ""
+    private var bio = ""
     
     func update(username: String, bio: String, photo: UIImage?) {
         guard validate(username: username, bio: bio, photo: photo) else { return }
-        self.controller?.gotoHome()
+        
+        self.username = username
+        self.bio = bio
+        
+        controller?.setLoading(visible: true)
+        if self.imageData != nil {
+            self.uploadPhoto()
+        }
+        else{
+            self.updateInfos(imageName: nil)
+        }
+    }
+    
+    private func uploadPhoto() {
+        guard let userId = UserSessionManager.shared.getUser()?.user.id,
+              let imageData else {
+            genericError = "Erro ao fazer upload da foto"
+            controller?.updateErros()
+            return
+        }
+        APIClient.shared.uploadImage(
+            endPoint: .uploadPhoto(userId: userId),
+            imageData: imageData,
+            onSuccess: { (response: KeyId) in
+                let imageName = APIConfig.baseURL + APIConfig.storage + response.Key
+                self.updateInfos(imageName: imageName)
+            },
+            onError: { errorMessage, statusCode in
+                self.genericError = errorMessage +  "Não foi possivel atualizar sua foto"
+                self.controller?.updateErros()
+                self.updateInfos(imageName: nil)
+            }
+        )
+    }
+    
+    private func updateInfos(imageName: String?) {
+        let body = AboutUserRequest(data: AboutUserData(username: username, bio: bio, avatar: imageName))
+        APIClient.shared.request(
+            endPoint: .updateUser,
+            method: .put,
+            body: body,
+            onSuccess: { (_: AnyCodable) in
+                self.controller?.setLoading(visible: false)
+                self.controller?.gotoHome()
+            },
+            onError: { errorMessage, statusCode in
+                self.controller?.setLoading(visible: false)
+                self.genericError = errorMessage
+                self.controller?.updateErros()
+            }
+        )
     }
     
     private func validate(username: String, bio: String, photo: UIImage?) -> Bool {

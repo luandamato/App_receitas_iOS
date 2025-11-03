@@ -93,6 +93,7 @@ class AboutUserVC: BaseViewController {
         addBackButton(action: voltar)
         setupViews()
         self.setupKeyboardHandling(scrollView)
+        fillFields()
     }
 
     // MARK: - Setup
@@ -150,6 +151,15 @@ class AboutUserVC: BaseViewController {
             btnUpdate.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -SizeConstants.mediumMargin),
             btnUpdate.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -SizeConstants.mediumMargin)
         ])
+    }
+    
+    private func fillFields() {
+        guard let user = UserSessionManager.shared.getUser()?.user else {
+            return
+        }
+        imgUser.setImageFor(link: UserSessionManager.shared.getUser()?.user.userMetadata.avatarUrl)
+        txtUserName.set(texto: user.userMetadata.username)
+        txtBio.set(texto: user.userMetadata.bio)
     }
 
     // MARK: - Actions

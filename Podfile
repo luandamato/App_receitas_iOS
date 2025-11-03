@@ -5,4 +5,5 @@ install! 'cocoapods', :disable_input_output_paths => true
 
 target 'Recipes' do
   pod 'AppCenter'
+  pod 'Alamofire'
 end
