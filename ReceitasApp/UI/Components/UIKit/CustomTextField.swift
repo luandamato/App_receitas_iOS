@@ -8,11 +8,26 @@
 
 import Foundation
 import UIKit
+import SwiftUI
+
+protocol SearchDelegate {
+    func searchButtonPessed(value: String)
+    func typingStop(value: String)
+    func userType(value: String)
+}
 
 @IBDesignable
 class CustomEditText : UIView, UITextFieldDelegate {
     
-    private var editText: UITextField = UITextField() {
+    private var widthConstraint: NSLayoutConstraint?
+    enum CustomEditTextType {
+        case normal
+        case password
+        case search
+    }
+    private var debounceTimer: Timer?
+    var searchDelegate: SearchDelegate?
+    fileprivate var editText: UITextField = UITextField() {
         didSet {
             //Default editText
             self.editText.textColor = AppColor.body
@@ -23,7 +38,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     var stack: UIStackView = UIStackView()
     var viewBorda: UIView = UIView()
     var viewBlock: UIView = UIView()
-    var lbl: UILabel = UILabel()
+    var lbl: CustomLabel = CustomLabel(type: .body)
     var lblErro: UILabel = UILabel()
     var altura: CGFloat = 63
     // Constants
@@ -32,7 +47,10 @@ class CustomEditText : UIView, UITextFieldDelegate {
     let fontSize : CGFloat = 12
     let cornerRadius : CGFloat = 5
     
-    
+    override var intrinsicContentSize: CGSize {
+        // Permite que o SwiftUI defina a largura
+        return CGSize(width: UIView.noIntrinsicMetric, height: altura)
+    }
     
     @IBInspectable
     var titulo : String = "" {
@@ -62,20 +80,21 @@ class CustomEditText : UIView, UITextFieldDelegate {
         }
     }
     
-    @IBInspectable
-    var senha : Bool = false {
+    var type: CustomEditTextType = .normal {
         didSet {
-            if senha{
+            switch type {
+            case .normal:
+                break
+                
+            case .password:
                 self.editText.isSecureTextEntry = true
+                setButtonImage(named: "Show", action: #selector(verCampo))
+                break
                 
-                let button = UIButton(type: .custom)
-                let image = getImageEye()
-                
-                button.setImage(image, for: .normal)
-                button.frame = CGRect(x: self.frame.size.width , y: 5, width: 30, height: 30)
-                button.addTarget(self, action: #selector(verCampo), for: .touchUpInside)
-                self.editText.rightView = button
-                self.editText.rightViewMode = .always
+            case .search:
+                self.editText.returnKeyType = .search
+                setButtonImage(named: "search", action: #selector(search))
+                break
             }
         }
     }
@@ -95,7 +114,7 @@ class CustomEditText : UIView, UITextFieldDelegate {
     @IBInspectable
     var autocapitalizationType : UITextAutocapitalizationType = .sentences {
         didSet {
-            if !senha{
+            if type == .normal {
                 self.editText.autocapitalizationType = autocapitalizationType
             }
         }
@@ -124,8 +143,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
     
     private func updateTitulo() {
         lbl.text = titulo
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = AppColor.body
     }
 
     private func updatePlaceholder() {
@@ -136,27 +153,42 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.editText.becomeFirstResponder()
     }
     
-    private func getImageEye(name: String = "Show") -> UIImage? {
+    private func setButtonImage(named: String, action: Selector){
+        let button = UIButton(type: .custom)
+        let image = getImage(name: named)
+        button.setImage(image, for: .normal)
+        button.frame = CGRect(x: self.frame.size.width , y: 5, width: 30, height: 30)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        self.editText.rightView = button
+        self.editText.rightViewMode = .always
+    }
+    
+    private func getImage(name: String) -> UIImage? {
         let image = UIImage(named: name)
         return image?.resize(maxWidthHeight: 30)
     }
     
     @objc private func verCampo(_ sender: UIButton) {
-        
         self.editText.isSecureTextEntry = !self.editText.isSecureTextEntry
-        
         if self.editText.isSecureTextEntry {
-            let image = getImageEye(name: "Show")
+            let image = getImage(name: "Show")
             sender.setImage(image, for: .normal)
         } else {
-            let image = getImageEye(name: "Hide")
+            let image = getImage(name: "Hide")
             sender.setImage(image, for: .normal)
         }
     }
     
+    @objc private func search(_ sender: UIButton) {
+        endEditing(true)
+        guard let value = self.editText.text else {
+            return
+        }
+        self.searchDelegate?.searchButtonPessed(value: value)
+    }
+    
     private func setup() {
         setLblColor()
-        setBorderColor()
         setBackgroundColor()
         refreshCorner()
         
@@ -214,9 +246,13 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.lblErro.isHidden = true
     }
     
-    public func setErro(erro: String){
-        lblErro.isHidden = erro.isEmpty
-        lblErro.text = erro
+    public func setError(_ error: String?){
+        guard let error else {
+            setOK()
+            return
+        }
+        lblErro.isHidden = error.isEmpty
+        lblErro.text = error
         self.lblErro.textColor = AppColor.error
         self.viewBorda.layer.borderColor = AppColor.error.cgColor
         self.viewBorda.layer.borderWidth = 1
@@ -227,7 +263,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.viewBorda.layer.borderColor = AppColor.divider.cgColor
         self.viewBorda.layer.borderWidth = 1
         setLblColor()
-        setBorderColor()
         refreshCorner()
     }
     
@@ -249,10 +284,6 @@ class CustomEditText : UIView, UITextFieldDelegate {
         self.editText.font = UIFont.systemFont(ofSize: 16)
     }
     
-    private func setBorderColor() {
-        self.viewBorda.layer.borderColor = UIColor.clear.cgColor
-    }
-    
     private func setBackgroundColor() {
         self.backgroundColor = .clear
         self.stack.backgroundColor = .clear
@@ -260,18 +291,108 @@ class CustomEditText : UIView, UITextFieldDelegate {
             
     }
     
+    func setWidth(_ width: CGFloat) {
+        if let widthConstraint = widthConstraint {
+            widthConstraint.constant = width
+        } else {
+            widthConstraint = self.widthAnchor.constraint(equalToConstant: width)
+            widthConstraint?.isActive = true
+        }
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+    }
+    
 }
 
 extension CustomEditText{
-    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        endEditing(true)
-    }
     
     func getTexto() -> String{
         return self.editText.text ?? ""
     }
     
-    func set(texto: String){
-        self.editText.text = texto
+    func set(texto: String?){
+        self.editText.text = texto ?? ""
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if type != .search { return true }
+        
+        // ao digitar procura resultado localmente, se parar de digitar por 2 segundos busca novos resultados na API
+        let currentText = (textField.text ?? "") as NSString
+        let newText = currentText.replacingCharacters(in: range, with: string)
+        self.searchDelegate?.userType(value: newText)
+        
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] _ in
+            guard let value = self?.editText.text else {
+                return
+            }
+            self?.searchDelegate?.typingStop(value: value)
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        if type != .search { return true }
+        debounceTimer?.invalidate()
+        guard let value = self.editText.text else {
+            return true
+        }
+        self.searchDelegate?.searchButtonPessed(value: value)
+        return true
     }
 }
+
+struct CustomEditTextView: UIViewRepresentable {
+    @Binding var text: String
+    var title: String
+    var placeholder: String
+    var type: CustomEditText.CustomEditTextType
+    var enable: Bool = true
+    var searchButtonPessed: ((String) -> Void)? = nil
+    var typingStop: ((String) -> Void)? = nil
+    var userType: ((String) -> Void)? = nil
+
+    func makeUIView(context: Context) -> CustomEditText {
+        let view = CustomEditText(titulo: title, placeholder: placeholder)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.type = type
+        view.enable = enable
+        view.searchDelegate = context.coordinator
+        view.set(texto: text)
+        view.editText.delegate = context.coordinator
+        return view
+    }
+
+    func updateUIView(_ uiView: CustomEditText, context: Context) {
+        if uiView.getTexto() != text {
+            uiView.set(texto: text)
+        }
+        uiView.enable = enable
+        uiView.type = type
+        DispatchQueue.main.async {
+            if let superview = uiView.superview {
+                uiView.setWidth(superview.bounds.width)
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    class Coordinator: NSObject, SearchDelegate, UITextFieldDelegate {
+        
+        var parent: CustomEditTextView
+        init(parent: CustomEditTextView) { self.parent = parent }
+        func searchButtonPessed(value: String) { parent.searchButtonPessed?(value) }
+        func typingStop(value: String) { parent.typingStop?(value) }
+        func userType(value: String) { parent.userType?(value) }
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            parent.text = textField.text ?? ""
+        }
+    }
+}
+

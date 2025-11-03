@@ -9,19 +9,32 @@ import UIKit
 
 extension UIViewController {
     
-    func showToast(message : String) {
+    func showToast(message: String?) {
+        guard let message else { return }
         let window: UIView = UIApplication.shared.keyWindow ?? self.view
-        let toastLabel = UILabel(frame: CGRect(x: 30, y: self.view.frame.size.height-100, width: self.view.frame.size.width - 60, height: 50))
+        let toastLabel = UILabel(frame: CGRect(x: 30, y: self.view.frame.size.height-100, width: self.view.frame.size.width - 60, height: 0))
         toastLabel.backgroundColor = AppColor.divider.withAlphaComponent(0.9)
         toastLabel.textColor = AppColor.body
         toastLabel.textAlignment = .center;
         toastLabel.text = message
+        toastLabel.numberOfLines = 0
         toastLabel.alpha = 1.0
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true
+        toastLabel.sizeToFit()
+        
+        let labelWidth = self.view.frame.size.width - 60
+        let labelHeight = toastLabel.frame.height + 20 // padding vertical
+        toastLabel.frame = CGRect(
+            x: 30,
+            y: self.view.frame.size.height - labelHeight - 40, // 40 de margem inferior
+            width: labelWidth,
+            height: labelHeight
+        )
+        
         window.addSubview(toastLabel)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            UIView.animate(withDuration: 3.0, delay: 0.1, options: .curveEaseOut, animations: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
                 toastLabel.alpha = 0.0
             }, completion: {(isCompleted) in
                 toastLabel.removeFromSuperview()
@@ -31,6 +44,7 @@ extension UIViewController {
     
     func closeKeyboardOnTouch(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     

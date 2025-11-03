@@ -63,7 +63,7 @@ extension BaseViewController {
     func setLoading(visible: Bool, fullScreen: Bool = true){
         self.view.bringSubviewToFront(loadView)
         if !visible{
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0) {
                 self.loadView.alpha = 0
             }
             return
@@ -76,7 +76,7 @@ extension BaseViewController {
 
 // MARK: - NavBar
 extension BaseViewController {
-    func addBackButton(title: String = "") {
+    func addBackButton(title: String = "", action: (() -> Void)? = nil) {
         let topBar = UIView()
         let backButton = UIButton(type: .system)
         let titleLabel = UILabel()
@@ -99,7 +99,11 @@ extension BaseViewController {
         let backImage = UIImage(named: ImageNameConstants.back)
         backButton.setImage(backImage, for: .normal)
         backButton.tintColor = AppColor.title
-        backButton.addTarget(self, action: #selector(voltar), for: .touchUpInside)
+        if let action {
+            backButton.addAction(UIAction { _ in action() }, for: .touchUpInside)
+        }else {
+            backButton.addTarget(self, action: #selector(voltar), for: .touchUpInside)
+        }
         topBar.addSubview(backButton)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

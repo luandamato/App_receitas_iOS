@@ -36,5 +36,58 @@
 "confirmPassword" = "Confirm your password";
 "register" = "Register";
 "alredyRegistered" = "Already have an account? ";
+"fillFullName" = "Please enter your full name";
+"invalidEmail" = "Invalid email";
+"invalidBirthdate" = "Invalid birthdate";
+"passwordMinLength" = "Password must be at least 4 characters long";
+"passwordsMustMatch" = "Passwords must match";
 
-"home" = "Home";
+//AboutUser
+"configureProfile" = "Configure your profile";
+"configureProfileDescription" = "Here you can set how other people see your profile.";
+"username" = "Username";
+"usernameHint" = "Username";
+"bio" = "Bio";
+"bioHint" = "Write a little about you. (Opcional)";
+"update" = "Update";
+"tooShortBio" = "Your bio must be longer";
+"tooLongBio" = "Your bio must be shorter";
+"imageError" = "Error on image loading";
+"imageTooLarge" = "The chosed image is too large";
+
+//Profile
+"sinceAt" = "Member since";
+"editProfile" = "Edit Profile";
+"preferences" = "Preferences";
+"myRecipes" = "My Recipes";
+"changePassword" = "Change Password";
+"exit" = "Exit";
+
+//Detail
+"ingredients" = "Ingredients";
+"preparation" = "Prepare mode";
+"publishedBy" = "Published by";
+"on" = "on";
+
+//addRecepe
+"ingredientHint" = "Ex: 2 cups of flour";
+"addIngredient" = "Add ingredient";
+"recipeName" = "Recipe name";
+"recipeNameHint" = "Chocolate cake";
+"description" = "Description";
+"prepareMode" = "Prepare mode";
+"saveRecipe" = "Save Recipe";
+"updateRecipe" = "Update Recipe";
+
+"home" = "Recipes";
+"favorites" = "Favorites";
+"profile" = "Profile";
+"search" = "Search";
+
+"addPhoto" = "Add photo";
+"selectPhoto" = "Select Photo";
+"fromGallery" = "Choose from Gallery";
+"fromCamera" = "Take Photo";
+"cancel" = "Cancel";
+"requiredField" = "Required field";
+"networkError" = "Falha na conexão, tente novamente mais tarde";
